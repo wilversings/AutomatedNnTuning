@@ -5,7 +5,7 @@
     <ProjectGuid>2a886495-4e83-4fb0-a032-7c2295f95e31</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Ann\AnnWrapper.py</StartupFile>
+    <StartupFile>Wrappers\AnnWrapper.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,16 +22,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Ann\AnnWrapper.py">
+    <Compile Include="Wrappers\AnnWrapper.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ann\ArtificialNn.py">
+    <Compile Include="Wrappers\ArtificialNn.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ann\ConvolutionalNn.py">
+    <Compile Include="Wrappers\ConvolutionalNn.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ann\LayerWrapper.py">
+    <Compile Include="Wrappers\LayerWrapper.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BachelorThesis.py" />
@@ -40,7 +40,7 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Ann\" />
+    <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\BachelorThesis\Wrappers\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\BachelorThesis\Ann\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

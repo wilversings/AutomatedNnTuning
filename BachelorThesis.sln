@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BachelorThesis", "BachelorThesis\BachelorThesis.pyproj", "{2A886495-4E83-4FB0-A032-7C2295F95E31}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "KerasWrapper", "BachelorThesis\KerasWrapper.pyproj", "{2A886495-4E83-4FB0-A032-7C2295F95E31}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Testing", "Testing\Testing.pyproj", "{9C6EFF9B-60A0-4AD6-99C6-6B7577394AE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2A886495-4E83-4FB0-A032-7C2295F95E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A886495-4E83-4FB0-A032-7C2295F95E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C6EFF9B-60A0-4AD6-99C6-6B7577394AE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C6EFF9B-60A0-4AD6-99C6-6B7577394AE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
