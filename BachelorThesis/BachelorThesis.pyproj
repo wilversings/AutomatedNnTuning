@@ -3,13 +3,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2a886495-4e83-4fb0-a032-7c2295f95e31</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
-    <StartupFile>BachelorThesis.py</StartupFile>
+    <ProjectHome>
+    </ProjectHome>
+    <StartupFile>Ann\AnnWrapper.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>BachelorThesis</Name>
+    <Name>KerasWrapper</Name>
     <RootNamespace>BachelorThesis</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -21,10 +22,26 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Ann\AnnWrapper.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ann\ArtificialNn.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ann\ConvolutionalNn.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ann\LayerWrapper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BachelorThesis.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Ann\" />
+    <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\BachelorThesis\Ann\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

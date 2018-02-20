@@ -62,7 +62,7 @@ model.compile(loss='categorical_crossentropy',
 print("-- Training ---------------------\n")
 model.fit(np.array(train_in) / 255,
           np.array(train_out),
-          epochs=5, batch_size=32, verbose=2)
+          epochs=10, batch_size=150, verbose=2)
 print("\n")
 
 
