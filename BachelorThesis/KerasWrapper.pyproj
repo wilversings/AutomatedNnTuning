@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Evolutionary\Individual.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Wrappers\AnnWrapper.py">
       <SubType>Code</SubType>
     </Compile>
@@ -42,6 +45,9 @@
   <ItemGroup>
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\BachelorThesis\Wrappers\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\BachelorThesis\Ann\" />
+    <Folder Include="Evolutionary\" />
+    <Folder Include="Tuners\" />
+    <Folder Include="Wrappers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

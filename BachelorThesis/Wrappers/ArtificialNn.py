@@ -1,11 +1,10 @@
 import AnnWrapper
-from keras import backend
+from Individual import Individual
 from keras.layers.core import Activation
 from keras.models import Sequential
 from keras.layers.core import Dense
 
-
-class ArtificialNn(AnnWrapper):
+class ArtificialNn(AnnWrapper, Individual):
 
     def __init__(self, input_size, output_size, clasf_prob: bool):
         
@@ -20,7 +19,9 @@ class ArtificialNn(AnnWrapper):
             Dense(
                 units=          self._layers[1].size, 
                 input_size=     self._layers[0].size)
-        ] + [Dense(units=x) for x in self._layers[2:]]
+        ] + [Dense(
+                units=      x.size, 
+                activation= x.activation) for x in self._layers[2:]]
 
         model = Sequential()
         
@@ -28,7 +29,7 @@ class ArtificialNn(AnnWrapper):
             model.add(layer)
 
         if self.__clasf_prob:
-            model.add(Activation(backend.softmax))
+            model.add(Activation("softmax"))
 
         model.compile(loss='categorical_crossentropy',
               optimizer='adam',
@@ -36,9 +37,7 @@ class ArtificialNn(AnnWrapper):
 
         self.__k_model = model
 
-
-
-    def crossover(self, conuter):
+    def crossover(self, other):
         pass
 
     def mutate(self):
