@@ -27,7 +27,7 @@ class ArtificialNn(AnnWrapper, Individual):
         
         for layer in k_layers:
             model.add(layer)
-
+              
         if self.__clasf_prob:
             model.add(Activation("softmax"))
 

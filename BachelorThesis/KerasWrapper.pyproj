@@ -25,6 +25,9 @@
     <Compile Include="Evolutionary\Individual.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Wrappers\AnnWrapper.py">
       <SubType>Code</SubType>
     </Compile>

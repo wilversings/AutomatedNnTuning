@@ -1,5 +1,6 @@
 from Individual import Individual
-from random import random
+from Utils import Utils
+from random import choice, random
 
 class LayerWrapper(Individual):
 
@@ -21,8 +22,8 @@ class LayerWrapper(Individual):
 
     def crossover(self, other):
         return LayerWrapper((self._size + other._size) / 2,
-                            self._activation if random() < .5 else other._activation)
+                            self._activation if Utils.flip_coin() else other._activation)
 
     def mutate(self):
         if random() < self.MUTATION_CHANCE:
-            self._size = self._size + (-1 if (random() < .5 and self._size > 1) else 1)
+            self._size = self._size + (-1 if (Utils.flip_coin() and self._size > 1) else 1)
