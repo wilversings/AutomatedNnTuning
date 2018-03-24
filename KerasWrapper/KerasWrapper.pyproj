@@ -11,7 +11,7 @@
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>KerasWrapper</Name>
-    <RootNamespace>BachelorThesis</RootNamespace>
+    <RootNamespace>KerasWrapper</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +23,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Evolutionary\Individual.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Evolutionary\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils.py">
@@ -40,14 +43,21 @@
     <Compile Include="Wrappers\LayerWrapper.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BachelorThesis.py" />
+    <Compile Include="entrypoint.py" />
+    <Compile Include="Wrappers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\BachelorThesis\Wrappers\" />
-    <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\BachelorThesis\Ann\" />
+    <Folder Include="Ann\" />
+    <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Wrappers\" />
+    <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Ann\" />
     <Folder Include="Evolutionary\" />
     <Folder Include="Tuners\" />
     <Folder Include="Wrappers\" />

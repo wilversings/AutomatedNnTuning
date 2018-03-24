@@ -1,5 +1,5 @@
-from Individual import Individual
-from Utils import Utils
+from KerasWrapper.Evolutionary.Individual import Individual
+from KerasWrapper.Utils import Utils
 from random import choice, random
 
 class LayerWrapper(Individual):
