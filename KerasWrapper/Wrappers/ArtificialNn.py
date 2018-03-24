@@ -38,7 +38,30 @@ class ArtificialNn(AnnWrapper, Individual):
         self.__k_model = model
 
     def crossover(self, other):
-        pass
+                
+        self_layers = self._layers
+        other_layers = other._layers
+
+        if len(self_layers) > len(other_layers):
+            # Make sure that self_layers has less layers than ctp_layers
+            self_layers, other_layers = other_layers, self_layers
+
+        # Chose random samples from the net with more layers
+        other_layers = random.sample(other_layers, len(self_layers))
+
+        return NeuralNetWrapper(self._input_size, self._output_size)\
+            .with_layers(
+                # Crossover the choices
+                list(map(lambda x, y: x.crossover(y).mutate(), other_layers, self_layers))
+            )\
+            .with_batch_size(
+                # Chose one random batch size from the two parts
+                # TODO: try with average
+                random.choice([self._batch_size, other._batch_size])
+            )\
+            .with_epochs(
+                random.choice([self._epochs, other._epochs])
+            )
 
     def mutate(self):
         pass
