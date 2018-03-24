@@ -1,10 +1,13 @@
 import AnnWrapper
-from Individual import Individual
+from random import choice, random
+from KerasWrapper.Evolutionary.Individual import Individual
 from keras.layers.core import Activation
 from keras.models import Sequential
 from keras.layers.core import Dense
 
 class ArtificialNn(AnnWrapper, Individual):
+
+    MUTATION_CHANCE = 0.2
 
     def __init__(self, input_size, output_size, clasf_prob: bool):
         
@@ -64,4 +67,8 @@ class ArtificialNn(AnnWrapper, Individual):
             )
 
     def mutate(self):
-        pass
+        if random() < self.MUTATION_CHANCE:
+            self._epochs = self._epochs + (-1 if (Utils.flip_coin() and self._epochs > 1) else 1)
+            self._batch_size = self._batch_size + (-1 if (Utils.flip_coin() and self._batch_size > 1) else 1)
+
+
