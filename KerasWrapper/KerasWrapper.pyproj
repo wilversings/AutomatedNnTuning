@@ -5,7 +5,8 @@
     <ProjectGuid>2a886495-4e83-4fb0-a032-7c2295f95e31</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Wrappers\NeuralNetWrapper.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -43,7 +44,6 @@
     <Compile Include="Wrappers\LayerWrapper.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="entrypoint.py" />
     <Compile Include="Wrappers\__init__.py">
       <SubType>Code</SubType>
     </Compile>

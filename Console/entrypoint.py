@@ -1,11 +1,13 @@
 from keras.models import Sequential
+from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
+from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
 from keras.layers.core import Dense
 import numpy as np
 
 from tensorflow.python.client import device_lib
 
 print("-- Devices list ---------------------\n")
-device_lib.list_local_devices() 
+device_lib.list_local_devices()
 print('\n')
 
 def parse_train():
@@ -50,29 +52,19 @@ train_out = list(map(label_to_out_layer, train_out))
 test_in, test_out = parse_test()
 test_out = list(map(label_to_out_layer, test_out))
 
-model = Sequential();
-model.add(Dense(units=300, input_dim=784, activation='relu'))
-model.add(Dense(units=300, activation='relu'))
-model.add(Dense(units=10, activation='softmax'))
+fitness = ArtificialNn(784, 10, True)\
+    .with_batch_size(150)\
+    .with_epochs(10)\
+    .with_layers([
+        LayerWrapper(300, 'relu'),
+        LayerWrapper(300, 'relu')
+    ])\
+    .compile()\
+    .measure_fitness(
+        np.array(train_in) / 255,
+        np.array(train_out),
+        np.array(test_in) / 255,
+        np.array(test_out)
+    )
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
-
-print("-- Training ---------------------\n")
-model.fit(np.array(train_in) / 255,
-          np.array(train_out),
-          epochs=10, batch_size=150, verbose=2)
-print("\n")
-
-
-
-print("-- Testing ---------------------\n")
-loss_and_metrics = model.evaluate(np.array(test_in) / 255,
-                                  np.array(test_out),
-                                  verbose=2)
-
-print("\n")
-print(loss_and_metrics)
-
-print("Done")
+print(fitness)

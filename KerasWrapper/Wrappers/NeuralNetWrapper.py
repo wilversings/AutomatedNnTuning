@@ -33,7 +33,7 @@ class NeuralNetWrapper(ABC):
     def with_layers(self, layers: List[LayerWrapper]):
 
         if __debug__:
-            assert(len(layers) >= 2)
+            assert(len(layers) >= 1)
 
         self._layers = layers
         return self

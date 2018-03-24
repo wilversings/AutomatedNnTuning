@@ -21,11 +21,14 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
         k_layers = [
             Dense(
-                units=          self._layers[1].size, 
-                input_size=     self._layers[0].size)
+                units=          self._layers[0].size, 
+                input_dim=      self._input_size)
         ] + [Dense(
                 units=      x.size, 
-                activation= x.activation) for x in self._layers[2:]]
+                activation= x.activation) for x in self._layers[1:]
+        ] + [Dense(
+                units=      self._output_size
+            )]
 
         model = Sequential()
         
@@ -44,6 +47,8 @@ class ArtificialNn(NeuralNetWrapper, Individual):
               metrics=['accuracy'])
 
         self.__k_model = model
+
+        return self
 
     def crossover(self, other):
                 
