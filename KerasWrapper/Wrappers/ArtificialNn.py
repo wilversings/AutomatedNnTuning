@@ -78,8 +78,8 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
     def mutate(self):
         if random() < self.MUTATION_CHANCE:
-            self._epochs = self._epochs + (-1 if (Utils.flip_coin() and self._epochs > 1) else 1)
-            self._batch_size = self._batch_size + (-1 if (Utils.flip_coin() and self._batch_size > 1) else 1)
+            self._epochs = self._epochs + choice([-1, 1])
+            self._batch_size = self._batch_size + choice([-1, 1])
 
 
     def measure_fitness(self):

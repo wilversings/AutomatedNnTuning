@@ -26,7 +26,7 @@ class LayerWrapper(Individual):
 
     def mutate(self):
         if random() < self.MUTATION_CHANCE:
-            self._size = self._size + (-1 if (Utils.flip_coin() and self._size > 1) else 1)
+            self._size = self._size + choice([-1, 1])
         return self
 
     def measure_fitness(self):
