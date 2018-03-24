@@ -8,10 +8,15 @@ class Test_TestLayerWrapper(unittest.TestCase):
         l1 = LayerWrapper(2, "softmax")
         l2 = LayerWrapper(8, "softmax")
 
-        son = l1.crossover(l2)
+        child = l1.crossover(l2)
 
-        self.assertEqual(son.size, 5)
-        self.assertEqual(son.activation, "softmax")
+        self.assertEqual(child.size, 5)
+        self.assertEqual(child.activation, "softmax")
+
+        l3 = LayerWrapper(2, "softmax")
+        grandchild = l3.crossover(child)
+        self.assertEqual(grandchild.size, 3)
+        self.assertEqual(grandchild.activation, "softmax")
 
 if __name__ == '__main__':
     unittest.main()

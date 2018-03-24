@@ -1,5 +1,6 @@
 from KerasWrapper.Wrappers.NeuralNetWrapper import NeuralNetWrapper
-from random import choice, random
+from KerasWrapper.Utils import Utils
+from random import choice, random, sample
 from KerasWrapper.Evolutionary.Individual import Individual
 from keras.layers.core import Activation
 from keras.models import Sequential
@@ -11,7 +12,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
     def __init__(self, input_size, output_size, clasf_prob: bool):
         
-        super(input_size, output_size)
+        super(ArtificialNn, self).__init__(input_size, output_size)
 
         self.__clasf_prob = clasf_prob
         self.__k_model = None
@@ -46,6 +47,11 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
     def crossover(self, other):
                 
+        if __debug__:
+            assert(self._input_size == other._input_size)
+            assert(self._output_size == other._output_size)
+            assert(self.__clasf_prob == other.__clasf_prob)
+
         self_layers = self._layers
         other_layers = other._layers
 
@@ -54,9 +60,9 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             self_layers, other_layers = other_layers, self_layers
 
         # Chose random samples from the net with more layers
-        other_layers = random.sample(other_layers, len(self_layers))
+        other_layers = Utils.ordered_sample(other_layers, len(self_layers))
 
-        return NeuralNetWrapper(self._input_size, self._output_size)\
+        return ArtificialNn(self._input_size, self._output_size, self.__clasf_prob)\
             .with_layers(
                 # Crossover the choices
                 list(map(lambda x, y: x.crossover(y).mutate(), other_layers, self_layers))
@@ -64,10 +70,10 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             .with_batch_size(
                 # Chose one random batch size from the two parts
                 # TODO: try with average
-                random.choice([self._batch_size, other._batch_size])
+                choice([self._batch_size, other._batch_size])
             )\
             .with_epochs(
-                random.choice([self._epochs, other._epochs])
+                choice([self._epochs, other._epochs])
             )
 
     def mutate(self):

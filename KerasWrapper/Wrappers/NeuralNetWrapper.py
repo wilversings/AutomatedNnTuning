@@ -1,4 +1,4 @@
-from LayerWrapper import LayerWrapper
+from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from typing import List
 from abc import abstractmethod
 from abc import ABC
@@ -37,3 +37,7 @@ class NeuralNetWrapper(ABC):
 
         self._layers = layers
         return self
+
+    @property
+    def layers(self):
+        return self._layers
