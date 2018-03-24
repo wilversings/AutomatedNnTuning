@@ -82,5 +82,13 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             self._batch_size = self._batch_size + choice([-1, 1])
 
 
-    def measure_fitness(self):
-        pass
+    def measure_fitness(self, train_in, train_out, test_in, test_out):
+        
+        if __debug__:
+            assert(self.__k_model is not None)
+
+        self.__k_model.fit(train_in, train_out,
+                           epochs=self._epochs, batch_size=self._batch_size, verbose=2)
+
+        loss_and_metrics = self.__k_model.evaluate(test_in, test_out, verbose=2)
+        return loss_and_metrics[1]
