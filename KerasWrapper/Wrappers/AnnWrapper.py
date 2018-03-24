@@ -9,7 +9,7 @@ class NeuralNetWrapper(ABC):
 
     def __init__(self, input_size, output_size):
         
-        # Hyperparameters that are configured by the Evolutive algorithm
+        # Hyperparameters that are configured by the Evolutive algorithm (genes)
         self._epochs = None
         self._batch_size = None
         self._layers = None
@@ -37,7 +37,3 @@ class NeuralNetWrapper(ABC):
 
         self._layers = layers
         return self
-    
-
-
-

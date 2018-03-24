@@ -10,3 +10,7 @@ class Individual(metaclass=ABCMeta):
     @abstractmethod
     def mutate(self):
         pass
+
+    @abstractmethod
+    def measure_fitness(self):
+        pass

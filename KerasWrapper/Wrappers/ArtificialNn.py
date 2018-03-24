@@ -35,6 +35,7 @@ class ArtificialNn(AnnWrapper, Individual):
             model.add(Activation("softmax"))
 
         model.compile(loss='categorical_crossentropy',
+                #TODO: make optimizer a gene
               optimizer='adam',
               metrics=['accuracy'])
 
@@ -72,3 +73,5 @@ class ArtificialNn(AnnWrapper, Individual):
             self._batch_size = self._batch_size + (-1 if (Utils.flip_coin() and self._batch_size > 1) else 1)
 
 
+    def measure_fitness(self):
+        pass
