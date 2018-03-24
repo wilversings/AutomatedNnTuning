@@ -5,7 +5,7 @@
     <ProjectGuid>2a886495-4e83-4fb0-a032-7c2295f95e31</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Wrappers\AnnWrapper.py</StartupFile>
+    <StartupFile>Wrappers\NeuralNetWrapper.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -31,7 +31,7 @@
     <Compile Include="Utils.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Wrappers\AnnWrapper.py">
+    <Compile Include="Wrappers\NeuralNetWrapper.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Wrappers\ArtificialNn.py">

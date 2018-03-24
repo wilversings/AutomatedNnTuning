@@ -1,11 +1,11 @@
-import AnnWrapper
+from KerasWrapper.Wrappers.NeuralNetWrapper import NeuralNetWrapper
 from random import choice, random
 from KerasWrapper.Evolutionary.Individual import Individual
 from keras.layers.core import Activation
 from keras.models import Sequential
 from keras.layers.core import Dense
 
-class ArtificialNn(AnnWrapper, Individual):
+class ArtificialNn(NeuralNetWrapper, Individual):
 
     MUTATION_CHANCE = 0.2
 
@@ -33,6 +33,9 @@ class ArtificialNn(AnnWrapper, Individual):
               
         if self.__clasf_prob:
             model.add(Activation("softmax"))
+        else:
+            # TODO: this
+            pass
 
         model.compile(loss='categorical_crossentropy',
                 #TODO: make optimizer a gene
