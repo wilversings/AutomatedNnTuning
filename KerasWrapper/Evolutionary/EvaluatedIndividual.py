@@ -4,7 +4,6 @@ from KerasWrapper.Evolutionary.Individual import Individual
 class EvaluatedIndividual:
 
     def __init__(self, individual: Individual):
-
         self._fitness = individual.measure_fitness()
         self._individual = individual
 

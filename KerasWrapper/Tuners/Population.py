@@ -9,7 +9,6 @@ class Population:
     AGE_STRETCH = 10
 
     def __init__(self, initial_populaiton: list[Individual]):
-
         self._population = SortedList(map(lambda x: EvaluatedIndividual(x)))
 
     #@staticmethod
@@ -34,7 +33,6 @@ class Population:
         return Utils.uneven(chance)
 
     def reproduce(self):
-        
         pop_list = list(self._population)
         pop_len = len(pop_list)
 
@@ -49,11 +47,9 @@ class Population:
         self._population.update(new_generation)
 
     def replace(self):
-
         selected = filter(lambda x: self.is_selected_for_death(x[1], x[0]), enumerate(self._population))
         for sel in selected:
             self._population.discard(sel)
-
 
     def grow(number_of_generaitons):
         pass
