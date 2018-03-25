@@ -1,4 +1,4 @@
-from random import choice, sample
+from random import choice, sample, random
 
 
 class Utils(object):
@@ -6,6 +6,10 @@ class Utils(object):
     @staticmethod
     def flip_coin():
         return choice([True, False])
+
+    @staticmethod
+    def uneven(chance):
+        return random() < chance
 
     @staticmethod
     def ordered_sample(list, k):
