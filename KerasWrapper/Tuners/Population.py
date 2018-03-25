@@ -36,7 +36,7 @@ class Population:
         pop_list = list(self._population)
         pop_len = len(pop_list)
 
-        new_generation = [pop_list[i].crossover(pop_list[j]).mutate() 
+        new_generation = [EvaluatedIndividual(pop_list[i].crossover(pop_list[j]).mutate())
                 for i in range(pop_len - 1) 
                 for j in range(i + 1, pop_len) 
                 if self.are_selected_for_reproduction(i, j)]
