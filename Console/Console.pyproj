@@ -22,6 +22,16 @@
   <ItemGroup>
     <Compile Include="entrypoint.py" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="test\" />
+    <Folder Include="train\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="test\mnist_test" />
+    <Content Include="test\mnist_test_labels" />
+    <Content Include="train\mnist" />
+    <Content Include="train\mnist_labels" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
        Visual Studio and specify your pre- and post-build commands in

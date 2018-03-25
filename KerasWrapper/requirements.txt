@@ -52,3 +52,4 @@ validictory==1.1.1
 Werkzeug==0.14.1
 wheel==0.30.0
 wrapt==1.10.11
+sortedcontainers==1.5.9

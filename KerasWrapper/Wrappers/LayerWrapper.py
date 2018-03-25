@@ -19,7 +19,7 @@ class LayerWrapper(Individual):
     @property
     def activation(self):
         return self._activation
-
+    
     def crossover(self, other):
         return LayerWrapper((self._size + other._size) // 2,
                             self._activation if Utils.flip_coin() else other._activation)
@@ -30,4 +30,4 @@ class LayerWrapper(Individual):
         return self
 
     def measure_fitness(self):
-        pass
+        raise NotImplementedError("Operation not supported. Cannot measure fitness of an layer")

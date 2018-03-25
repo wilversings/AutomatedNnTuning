@@ -23,10 +23,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Evolutionary\EvaluatedIndividual.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Evolutionary\Individual.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Evolutionary\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tuners\Population.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils.py">
@@ -55,7 +61,6 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Ann\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Wrappers\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Ann\" />
     <Folder Include="Evolutionary\" />
