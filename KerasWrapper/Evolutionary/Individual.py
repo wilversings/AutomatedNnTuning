@@ -15,7 +15,7 @@ class Individual(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def measure_fitness(self):
+    def measure_fitness(self, eval_data):
         pass
 
     @property

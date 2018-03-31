@@ -1,4 +1,6 @@
 from KerasWrapper.Evolutionary.Individual import Individual
+from copy import copy
+import logging
 from KerasWrapper.Utils import Utils
 from KerasWrapper.Evolutionary.EvaluatedIndividual import EvaluatedIndividual
 from sortedcontainers import SortedList
@@ -8,8 +10,14 @@ class Population:
     
     AGE_STRETCH = 10
 
-    def __init__(self, initial_populaiton: list[Individual]):
-        self._population = SortedList(map(lambda x: EvaluatedIndividual(x)))
+    def __init__(self, initial_populaiton):
+        self._population = None
+        self._population_raw = initial_populaiton
+
+    @staticmethod
+    def from_blueprint(ann_blueprint, lambda_list):
+        population = [lbd(copy(ann_blueprint)).compile() for lbd in lambda_list]
+        return Population(population)
 
     #@staticmethod
     #def are_selected_for_reproduction(first, second, all):
@@ -32,11 +40,18 @@ class Population:
         chance = individual.individual.age / Population.AGE_STRETCH * (1 - i / n)
         return Utils.uneven(chance)
 
-    def reproduce(self):
+    def reproduce(self, eval_data):
         pop_list = list(self._population)
         pop_len = len(pop_list)
 
-        new_generation = [EvaluatedIndividual(pop_list[i].crossover(pop_list[j]).mutate())
+        new_generation = [
+            EvaluatedIndividual(
+                pop_list[i].individual
+                .crossover(pop_list[j].individual)
+                .mutate()
+                .compile(), 
+                eval_data
+            )
                 for i in range(pop_len - 1)
                 for j in range(i + 1, pop_len)
                 if self.are_selected_for_reproduction(i, j)]
@@ -49,8 +64,17 @@ class Population:
     def replace(self):
         selected = filter(lambda x: self.is_selected_for_death(x[1], x[0]), enumerate(self._population))
         for sel in selected:
-            self._population.discard(sel)
+            self._population.discard(sel[1])
 
-    def grow(number_of_generaitons):
-        pass
+    def grow_by_nr_of_generations(self, nr_of_generaitons, eval_data):
+        
+        self._population = SortedList(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))
 
+        for i in range(nr_of_generaitons):
+
+            logging.info("Growing generation %d...", i)
+
+            self.reproduce(eval_data)
+            self.replace()
+
+            logging.info("Growing done for generation %d! individuals: %d, best's fitness: %d", i, len(self._population), self._population[-1].fitness)

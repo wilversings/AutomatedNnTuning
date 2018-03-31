@@ -35,7 +35,13 @@
     <Compile Include="Tuners\Population.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tuners\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utils.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Wrappers\EvaluationData.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Wrappers\NeuralNetWrapper.py">
@@ -61,6 +67,7 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Ann\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Wrappers\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Ann\" />
     <Folder Include="Evolutionary\" />

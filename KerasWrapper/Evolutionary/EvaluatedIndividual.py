@@ -1,10 +1,11 @@
 from KerasWrapper.Evolutionary.Individual import Individual
+from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 
 
 class EvaluatedIndividual:
 
-    def __init__(self, individual: Individual):
-        self._fitness = individual.measure_fitness()
+    def __init__(self, individual: Individual, eval_data: EvaluationData):
+        self._fitness = individual.measure_fitness(eval_data)
         self._individual = individual
 
     def __gt__(self, ctp):

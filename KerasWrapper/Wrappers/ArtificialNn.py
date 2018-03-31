@@ -1,10 +1,12 @@
 from KerasWrapper.Wrappers.NeuralNetWrapper import NeuralNetWrapper
+from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from KerasWrapper.Utils import Utils
 from random import choice, random, sample
 from KerasWrapper.Evolutionary.Individual import Individual
 from keras.layers.core import Activation
 from keras.models import Sequential
 from keras.layers.core import Dense
+import logging
 
 class ArtificialNn(NeuralNetWrapper, Individual):
 
@@ -12,7 +14,8 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
     def __init__(self, input_size, output_size, clasf_prob: bool):
         
-        super(ArtificialNn, self).__init__(input_size, output_size)
+        NeuralNetWrapper.__init__(self, input_size, output_size)
+        Individual.__init__(self)
 
         self.__clasf_prob = clasf_prob
         self.__k_model = None
@@ -85,15 +88,17 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         if random() < self.MUTATION_CHANCE:
             self._epochs = self._epochs + choice([-1, 1])
             self._batch_size = self._batch_size + choice([-1, 1])
+        return self
 
-
-    def measure_fitness(self, train_in, train_out, test_in, test_out):
+    def measure_fitness(self, data: EvaluationData):
         
         if __debug__:
             assert(self.__k_model is not None)
 
-        self.__k_model.fit(train_in, train_out,
+        logging.info("Measuring fitness of AritifialNn")
+
+        self.__k_model.fit(data.train_in, data.train_out,
                            epochs=self._epochs, batch_size=self._batch_size, verbose=2)
 
-        loss_and_metrics = self.__k_model.evaluate(test_in, test_out, verbose=2)
+        loss_and_metrics = self.__k_model.evaluate(data.test_in, data.test_out, verbose=2)
         return loss_and_metrics[1]
