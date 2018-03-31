@@ -78,3 +78,7 @@ class Population:
             self.replace()
 
             logging.info("Growing done for generation %d! individuals: %d, best's fitness: %d", i, len(self._population), self._population[-1].fitness)
+
+    @property
+    def population(self):
+        return self._population

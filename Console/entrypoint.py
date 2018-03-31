@@ -1,4 +1,6 @@
 from keras.models import Sequential
+import logging
+import json
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
@@ -11,6 +13,8 @@ from tensorflow.python.client import device_lib
 print("-- Devices list ---------------------\n")
 device_lib.list_local_devices()
 print('\n')
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 def parse_train():
     with open('train/mnist', 'rb') as mnist:
@@ -57,16 +61,6 @@ test_out = np.array(list(map(label_to_out_layer, test_out)))
 train_in = np.array(train_in) / 255
 test_in = np.array(test_in) / 255
 
-#fitness = ArtificialNn(784, 10, True)\
-#    .with_batch_size(150)\
-#    .with_epochs(10)\
-#    .with_layers([LayerWrapper(300, 'relu'),
-#        LayerWrapper(300, 'relu')])\
-#    .compile()\
-#    .measure_fitness(np.array(train_in) / 255,
-#        np.array(train_out),
-#        np.array(test_in) / 255,
-#        np.array(test_out))
 
 pop = Population.from_blueprint(ArtificialNn(784, 10, True), [
     lambda x: x.with_batch_size(150)
@@ -103,5 +97,3 @@ pop = Population.from_blueprint(ArtificialNn(784, 10, True), [
 eval_data = EvaluationData(test_in, test_out, train_in, train_out)
 
 pop.grow_by_nr_of_generations(4, eval_data)
-
-print(fitness)
