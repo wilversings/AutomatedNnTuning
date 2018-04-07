@@ -14,7 +14,11 @@ print("-- Devices list ---------------------\n")
 device_lib.list_local_devices()
 print('\n')
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                    datefmt='%m-%d %H:%M:%S',
+                    filename='general.log',
+                    filemode='w')
 
 def parse_train():
     with open('train/mnist', 'rb') as mnist:

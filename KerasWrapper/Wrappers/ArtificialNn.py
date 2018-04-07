@@ -95,8 +95,6 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         if __debug__:
             assert(self.__k_model is not None)
 
-        logging.info("Measuring fitness of AritifialNn")
-
         self.__k_model.fit(data.train_in, data.train_out,
                            epochs=self._epochs, batch_size=self._batch_size, verbose=2)
 

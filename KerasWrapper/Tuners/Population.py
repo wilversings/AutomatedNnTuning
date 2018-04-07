@@ -20,6 +20,9 @@ class Population:
         self._population = None
         self._population_raw = initial_populaiton
 
+        self._graveyard = []
+        self._logger = logging.getLogger("population")
+
     #@staticmethod
     #def are_selected_for_reproduction(first, second, all):
     #    if __debug__:
@@ -63,23 +66,28 @@ class Population:
 
         self._population.update(new_generation)
 
+        self._logger.info("Reproduction: new individuals: %d, total individuals: %d", len(new_generation), len(self._population))
+
     def replace(self):
         selected = filter(lambda x: self.is_selected_for_death(x[1], x[0]), enumerate(self._population))
         for sel in selected:
+            self._graveyard.append(sel[1])
             self._population.discard(sel[1])
+
+            self._logger.info("{} died!".format(sel[1].individual.name))
 
     def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         
-        logging.info("Measuring fitness of the initial population...");
+        self._logger.info("Measuring fitness of the initial population...");
         self._population = SortedList(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))
-        logging.info("Measuring initial population done! individuals: %f, best's fitness: %f", len(self._population), self._population[-1].fitness)
+        self._logger.info("Measuring initial population done! individuals: %d, best's fitness: %f", len(self._population), self._population[-1].fitness)
 
         for i in range(nr_of_generaitons):
 
-            logging.info("Growing generation %d...", i)
+            self._logger.info("Started growing generation %d...", i)
             self.reproduce(eval_data)
             self.replace()
-            logging.info("Growing done for generation %d! individuals: %d, best's fitness: %d", i, len(self._population), self._population[-1].fitness)
+            self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %d", i, len(self._population), self._population[-1].fitness)
 
     @property
     def population(self):

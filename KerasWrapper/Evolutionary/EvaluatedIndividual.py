@@ -1,12 +1,15 @@
 from KerasWrapper.Evolutionary.Individual import Individual
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
-
+import logging
 
 class EvaluatedIndividual:
 
     def __init__(self, individual: Individual, eval_data: EvaluationData):
         self._fitness = individual.measure_fitness(eval_data)
         self._individual = individual
+
+        logging.getLogger("fitness").info("{} was born! fitness: {}".format(individual.name, self._fitness))
+
 
     def __gt__(self, ctp):
         return self._fitness > ctp._fitness
