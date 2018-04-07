@@ -87,15 +87,21 @@ class Population:
             self._logger.info("Started growing generation %d...", i)
             self.reproduce(eval_data)
             self.replace()
-            self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %d", i, len(self._population), self._population[-1].fitness)
+            self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %f", i, len(self._population), self._population[-1].fitness)
 
     @property
     def population(self):
         return self._population
 
     @staticmethod
-    def from_blueprint(ann_blueprint: ArtificialNn, lambda_list):
-        population = [lbd(copy(ann_blueprint)).compile() for lbd in lambda_list]
+    def from_blueprint(ann_blueprint: ArtificialNn, ann_list):
+        population = [copy(ann_blueprint)
+                      .with_batch_size(ann["batchSize"])
+                      .with_epochs(ann["epochs"])
+                      .with_layers([
+                          LayerWrapper(layer["size"], layer["activation"]) for layer in ann["layers"]
+                      ])
+                      .compile() for ann in ann_list]
         return Population(population)
 
     @staticmethod
@@ -110,12 +116,6 @@ class Population:
                     config["outputSize"],
                     config["clasfProb"]
                 ), 
-                [lambda x: x.with_batch_size(ind["batchSize"])
-                            .with_epochs(ind["epochs"])
-                            .with_layers(
-                                [LayerWrapper(layer["size"], layer["activation"]) 
-                                for layer in ind["layers"]]
-                            )
-                for ind in config["individuals"]]
+                config["individuals"]
             )
 

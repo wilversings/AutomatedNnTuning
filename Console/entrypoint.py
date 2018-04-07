@@ -70,4 +70,4 @@ pop = Population.from_json(open("populationConfig.json").read())
 
 eval_data = EvaluationData(test_in, test_out, train_in, train_out)
 
-pop.grow_by_nr_of_generations(4, eval_data)
+pop.grow_by_nr_of_generations(5, eval_data)
