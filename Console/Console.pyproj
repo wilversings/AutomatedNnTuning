@@ -27,6 +27,7 @@
     <Folder Include="train\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="populationConfig.json" />
     <Content Include="test\mnist_test" />
     <Content Include="test\mnist_test_labels" />
     <Content Include="train\mnist" />

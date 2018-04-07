@@ -38,7 +38,13 @@
     <Compile Include="Tuners\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils.py">
+    <Compile Include="Utility\JsonConfigManager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utility\Utils.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utility\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Wrappers\EvaluationData.py">
@@ -64,6 +70,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Evolutionary\Config\populationConfig.example.json" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +78,8 @@
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Wrappers\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Ann\" />
     <Folder Include="Evolutionary\" />
+    <Folder Include="Evolutionary\Config\" />
+    <Folder Include="Utility\" />
     <Folder Include="Tuners\" />
     <Folder Include="Wrappers\" />
   </ItemGroup>

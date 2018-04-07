@@ -72,7 +72,7 @@ pop = Population.from_blueprint(ArtificialNn(784, 10, True), [
     lambda x: x.with_batch_size(50)
         .with_epochs(5)
         .with_layers([
-            LayerWrapper(25, 'relu')    
+            LayerWrapper(25, 'relu')
         ]),
     lambda x: x.with_batch_size(75)
         .with_epochs(10)

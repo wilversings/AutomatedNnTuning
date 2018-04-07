@@ -1,0 +1,74 @@
+{
+  "type": "ArtificialNn",
+  "inputSize": 784,
+  "outputSize": 10,
+  "clasfProb": true,
+  "individuals": [
+    {
+      "batchSize": 150,
+      "epochs": 10,
+      "layers": [
+        {
+          "size": 27,
+          "activation": "relu"
+        },
+        {
+          "size": 53,
+          "activation": "relu"
+        }
+      ]
+    },
+    {
+      "batchSize": 50,
+      "epochs": 5,
+      "layers": [
+        {
+          "size": 25,
+          "activation": "relu"
+        }
+      ]
+    },
+    {
+      "batchSize": 75,
+      "epochs": 10,
+      "layers": [
+        {
+          "size": 25,
+          "activation": "relu"
+        },
+        {
+          "size": 23,
+          "activation": "relu"
+        },
+        {
+          "size": 31,
+          "activation": "relu"
+        }
+      ]
+    },
+    {
+      "batchSize": 50,
+      "epochs": 3,
+      "layers": [
+        {
+          "size": 110,
+          "activation": "relu"
+        },
+        {
+          "size": 300,
+          "activation": "relu"
+        }
+      ]
+    },
+    {
+      "batchSize": 150,
+      "epochs": 10,
+      "layers": [
+        {
+          "size": 300,
+          "activation": "relu"
+        }
+      ]
+    }
+  ]
+}

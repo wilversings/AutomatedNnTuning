@@ -1,6 +1,6 @@
 from KerasWrapper.Wrappers.NeuralNetWrapper import NeuralNetWrapper
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
-from KerasWrapper.Utils import Utils
+from KerasWrapper.Utility.Utils import Utils
 from random import choice, random, sample
 from KerasWrapper.Evolutionary.Individual import Individual
 from keras.layers.core import Activation

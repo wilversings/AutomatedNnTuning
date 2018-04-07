@@ -1,23 +1,24 @@
 from KerasWrapper.Evolutionary.Individual import Individual
+from Wrappers.LayerWrapper import LayerWrapper
+from KerasWrapper.Utility.JsonConfigManager import JsonConfigManager
+from KerasWrapper.Wrappers.EvaluationData import EvaluationData
+from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
+from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from copy import copy
 import logging
-from KerasWrapper.Utils import Utils
+from KerasWrapper.Utility.Utils import Utils
 from KerasWrapper.Evolutionary.EvaluatedIndividual import EvaluatedIndividual
 from sortedcontainers import SortedList
 from random import random
+import json
 
 class Population:
     
     AGE_STRETCH = 10
 
-    def __init__(self, initial_populaiton):
+    def __init__(self, initial_populaiton: list):
         self._population = None
         self._population_raw = initial_populaiton
-
-    @staticmethod
-    def from_blueprint(ann_blueprint, lambda_list):
-        population = [lbd(copy(ann_blueprint)).compile() for lbd in lambda_list]
-        return Population(population)
 
     #@staticmethod
     #def are_selected_for_reproduction(first, second, all):
@@ -30,17 +31,17 @@ class Population:
 
     #    return Utils.uneven(delta_chance)
 
-    def are_selected_for_reproduction(self, i, j):
+    def are_selected_for_reproduction(self, i: int, j: int):
         n = len(self._population)
         chance = i * j / (n - 1) ** 2
         return Utils.uneven(chance)
 
-    def is_selected_for_death(self, individual: EvaluatedIndividual, i):
+    def is_selected_for_death(self, individual: EvaluatedIndividual, i: int):
         n = len(self._population)
         chance = individual.individual.age / Population.AGE_STRETCH * (1 - i / n)
         return Utils.uneven(chance)
 
-    def reproduce(self, eval_data):
+    def reproduce(self, eval_data: EvaluationData):
         pop_list = list(self._population)
         pop_len = len(pop_list)
 
@@ -52,9 +53,10 @@ class Population:
                 .compile(), 
                 eval_data
             )
-                for i in range(pop_len - 1)
-                for j in range(i + 1, pop_len)
-                if self.are_selected_for_reproduction(i, j)]
+            for i in range(pop_len - 1)
+            for j in range(i + 1, pop_len)
+            if self.are_selected_for_reproduction(i, j)
+        ]
             
         for individual in pop_list:
             individual.individual.increase_age()
@@ -66,19 +68,46 @@ class Population:
         for sel in selected:
             self._population.discard(sel[1])
 
-    def grow_by_nr_of_generations(self, nr_of_generaitons, eval_data):
+    def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         
+        logging.info("Measuring fitness of the initial population...");
         self._population = SortedList(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))
+        logging.info("Measuring initial population done! individuals: %f, best's fitness: %f", len(self._population), self._population[-1].fitness)
 
         for i in range(nr_of_generaitons):
 
             logging.info("Growing generation %d...", i)
-
             self.reproduce(eval_data)
             self.replace()
-
             logging.info("Growing done for generation %d! individuals: %d, best's fitness: %d", i, len(self._population), self._population[-1].fitness)
 
     @property
     def population(self):
         return self._population
+
+    @staticmethod
+    def from_blueprint(ann_blueprint: ArtificialNn, lambda_list):
+        population = [lbd(copy(ann_blueprint)).compile() for lbd in lambda_list]
+        return Population(population)
+
+    @staticmethod
+    def from_json(json: str):
+        config = json.loads(json)
+        JsonConfigManager.validate_population_config(config)
+
+        if config["type"] == "ArtificialNn":
+            return Population.from_blueprint(
+                ArtificialNn(
+                    config["inputSize"],
+                    config["outputSize"],
+                    config["clasfProb"]
+                ), 
+                [lambda x: x.with_batch_size(ind["batchSize"])
+                            .with_epochs(ind["epochs"])
+                            .with_layers(
+                                [LayerWrapper(layer["size"], layer["activation"]) 
+                                for layer in ind["layers"]]
+                            )
+                for ind in config["individuals"]]
+            )
+
