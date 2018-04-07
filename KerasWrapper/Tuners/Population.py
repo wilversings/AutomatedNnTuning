@@ -1,5 +1,5 @@
 from KerasWrapper.Evolutionary.Individual import Individual
-from Wrappers.LayerWrapper import LayerWrapper
+from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from KerasWrapper.Utility.JsonConfigManager import JsonConfigManager
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
@@ -91,8 +91,8 @@ class Population:
         return Population(population)
 
     @staticmethod
-    def from_json(json: str):
-        config = json.loads(json)
+    def from_json(json_config: str):
+        config = json.loads(json_config)
         JsonConfigManager.validate_population_config(config)
 
         if config["type"] == "ArtificialNn":

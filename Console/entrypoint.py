@@ -62,37 +62,7 @@ train_in = np.array(train_in) / 255
 test_in = np.array(test_in) / 255
 
 
-pop = Population.from_blueprint(ArtificialNn(784, 10, True), [
-    lambda x: x.with_batch_size(150)
-        .with_epochs(10)
-        .with_layers([
-            LayerWrapper(27, 'relu'),
-            LayerWrapper(53, 'relu')
-        ]),
-    lambda x: x.with_batch_size(50)
-        .with_epochs(5)
-        .with_layers([
-            LayerWrapper(25, 'relu')
-        ]),
-    lambda x: x.with_batch_size(75)
-        .with_epochs(10)
-        .with_layers([
-            LayerWrapper(25, 'relu'),
-            LayerWrapper(23, 'relu'),
-            LayerWrapper(31, 'relu')
-        ]),
-    lambda x: x.with_batch_size(30)
-        .with_epochs(3)
-        .with_layers([
-            LayerWrapper(110, 'relu'),
-            LayerWrapper(300, 'relu'),
-        ]),
-    #lambda x: x.with_batch_size(150)
-    #    .with_epochs(10)
-    #    .with_layers([
-    #        LayerWrapper(300, 'relu')
-    #    ])
-    ]);
+pop = Population.from_json(open("populationConfig.json").read())
 
 eval_data = EvaluationData(test_in, test_out, train_in, train_out)
 
