@@ -20,7 +20,7 @@
     },
     {
       "batchSize": 50,
-      "epochs": 5,
+      "epochs": 8,
       "layers": [
         {
           "size": 25,
@@ -30,18 +30,22 @@
     },
     {
       "batchSize": 75,
-      "epochs": 10,
+      "epochs": 9,
       "layers": [
         {
           "size": 25,
           "activation": "relu"
         },
         {
-          "size": 23,
+          "size": 34,
           "activation": "relu"
         },
         {
           "size": 31,
+          "activation": "relu"
+        },
+        {
+          "size": 59,
           "activation": "relu"
         }
       ]
@@ -61,11 +65,11 @@
       ]
     },
     {
-      "batchSize": 150,
+      "batchSize": 140,
       "epochs": 10,
       "layers": [
         {
-          "size": 300,
+          "size": 253,
           "activation": "relu"
         }
       ]

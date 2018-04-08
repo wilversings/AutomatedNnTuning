@@ -78,10 +78,10 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             .with_batch_size(
                 # Chose one random batch size from the two parts
                 # TODO: try with average
-                choice([self._batch_size, other._batch_size])
+                (self._batch_size + other._batch_size) // 2
             )\
             .with_epochs(
-                choice([self._epochs, other._epochs])
+                (self._epochs + other._epochs) // 2
             )
 
     def mutate(self):
