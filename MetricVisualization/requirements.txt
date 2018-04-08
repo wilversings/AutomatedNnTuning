@@ -45,6 +45,7 @@ rsa==3.4.2
 scipy==1.0.0
 setuptools==28.8.0
 six==1.11.0
+sortedcontainers==1.5.9
 tensorflow-gpu==1.5.0
 tensorflow-tensorboard==1.5.1
 urllib3==1.22
@@ -52,4 +53,3 @@ validictory==1.1.1
 Werkzeug==0.14.1
 wheel==0.30.0
 wrapt==1.10.11
-sortedcontainers==1.5.9

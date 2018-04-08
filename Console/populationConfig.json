@@ -73,6 +73,24 @@
           "activation": "relu"
         }
       ]
+    },
+    {
+      "batchSize": 139,
+      "epochs": 9,
+      "layers": [
+        {
+          "size": 81,
+          "activation": "relu"
+        },
+        {
+          "size": 52,
+          "activation": "relu"
+        },
+        {
+          "size": 37,
+          "activation": "relu"
+        }
+      ]
     }
   ]
 }
