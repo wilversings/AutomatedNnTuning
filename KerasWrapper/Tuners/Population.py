@@ -78,16 +78,19 @@ class Population:
 
     def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         
-        self._logger.info("Measuring fitness of the initial population...");
+        self._logger.info("Started growing generation 0...");
         self._population = SortedList(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))
-        self._logger.info("Measuring initial population done! individuals: %d, best's fitness: %f", len(self._population), self._population[-1].fitness)
+        self._logger.info("Growing done for generation 0! individuals: %d, best's fitness: %f", len(self._population), self._population[-1].fitness)
 
         for i in range(nr_of_generaitons):
 
-            self._logger.info("Started growing generation %d...", i)
+            self._logger.info("Started growing generation %d...", i + 1)
             self.reproduce(eval_data)
             self.replace()
-            self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %f", i, len(self._population), self._population[-1].fitness)
+
+            pop_size = len(self._population)
+            self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %f, avg fitness: %f", 
+                              i + 1, pop_size, self._population[-1].fitness, sum(x.fitness for x in self._population) / pop_size)
 
     @property
     def population(self):

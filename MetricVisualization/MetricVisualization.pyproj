@@ -21,7 +21,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MetricVisualization.py" />
+    <Compile Include="FitnessTrend.py" />
+    <Compile Include="GenerationSizeHistogram.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
