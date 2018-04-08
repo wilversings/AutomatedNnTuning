@@ -14,7 +14,7 @@ import json
 
 class Population:
     
-    AGE_STRETCH = 10
+    AGE_STRETCH = 3
 
     def __init__(self, initial_populaiton: list):
         self._population = None
