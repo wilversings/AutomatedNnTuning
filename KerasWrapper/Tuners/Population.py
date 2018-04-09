@@ -14,7 +14,7 @@ import json
 
 class Population:
     
-    AGE_STRETCH = 3
+    AGE_STRETCH = 2
 
     def __init__(self, initial_populaiton: list):
         self._population = None
@@ -76,11 +76,25 @@ class Population:
 
             self._logger.info("{} died!".format(sel[1].individual.name))
 
+    def generation_report(self, i):
+
+        pop_size = len(self._population)
+
+        if pop_size == 0:
+            self._logger.info("Your species didn't survive !")
+            return False
+
+        self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %f, avg fitness: %f", 
+                            i, pop_size, self._population[-1].fitness, sum(x.fitness for x in self._population) / pop_size)
+
+        return True
+
     def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         
         self._logger.info("Started growing generation 0...");
         self._population = SortedList(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))
-        self._logger.info("Growing done for generation 0! individuals: %d, best's fitness: %f", len(self._population), self._population[-1].fitness)
+
+        self.generation_report(0)
 
         for i in range(nr_of_generaitons):
 
@@ -88,9 +102,8 @@ class Population:
             self.reproduce(eval_data)
             self.replace()
 
-            pop_size = len(self._population)
-            self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %f, avg fitness: %f", 
-                              i + 1, pop_size, self._population[-1].fitness, sum(x.fitness for x in self._population) / pop_size)
+            if not self.generation_report(i + 1):
+                break
 
     @property
     def population(self):
