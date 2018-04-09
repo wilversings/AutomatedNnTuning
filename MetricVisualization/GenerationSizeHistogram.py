@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import re
 
-fl = open("general.log", "r")
+fl = open(input("Filename: "), "r")
 generations, avg_fit, best_fit = zip(*[
         (float(re.search("individuals: ([0-9]*)", log).group(1)), 
-         float(re.search("avg fitness: ([0-9\.]*)", log).group(1)),
+         (float(re.search("avg fitness: ([0-9\.]*)", log).group(1))) if (re.search("avg fitness: ([0-9\.]*)", log) is not None) else None,
          float(re.search("best's fitness: ([0-9\.]*)", log).group(1)))
         for log in fl 
         if "Growing done for generation" in log])

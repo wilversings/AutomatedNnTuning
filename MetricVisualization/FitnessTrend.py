@@ -4,7 +4,7 @@ import re
 
 individuals = [
         float(re.search("fitness: (.*)", log).group(1)) 
-        for log in open("general.log", "r") 
+        for log in open(input("Filename: "), "r") 
         if "was born!" in log]
 
 individuals = np.array(individuals)
