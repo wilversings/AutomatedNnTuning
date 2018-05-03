@@ -21,6 +21,11 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         self.__k_model = None
 
     def compile(self):
+        """
+        Compiles the ArtificialNn decorator into a real Keras object,
+        with regard about the input, hidden & output layers
+        :return: Returns self for chainability reasons
+        """
 
         k_layers = [
             Dense(
@@ -54,6 +59,12 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         return self
 
     def crossover(self, other):
+        """
+        Performs a crossover of the current Neural Network with another one
+
+        :param other: the couterpart neural network
+        :return: A new neural network
+        """
                 
         if __debug__:
             assert(self._input_size == other._input_size)
