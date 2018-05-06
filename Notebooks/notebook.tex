@@ -414,6 +414,10 @@ Learning problems
     \hypertarget{core-concepts}{%
 \section{2. Core concepts}\label{core-concepts}}
 
+In the following lines we are going to explain the two
+concepts/techniques used in our case study, as well as the integration
+between the two
+
     \hypertarget{a.-genetic-programming}{%
 \subsection{A. Genetic programming}\label{a.-genetic-programming}}
 
@@ -439,26 +443,120 @@ having individuals in population that can mix their genes and get
 evaluated based on certain characteristics, seems like a good solution
 for our problem. The brain itself was created in the same manner.
 
-The very general idea, expressed in pseudo-code is :
+The very general picture of the concept is expressed in the following
+pseudo-code:
 
     Begin Initialize population with random individuals Evaluate each
 individual from the initial population While ( Certain stop condition )
 Select and crossover parents; Mutate the resulting sons; Evaluate the
-new individuals; Select survivors End\_While End
+new individuals; Select survivors End\_While End 
 
     A very important characteristic to some of the above-mentioned
 operations (natural selection, mutation) is that they are stochastic
 which means that in their way of determining the result, they make
-choices based on randomness or on chance. So we know now that EAs don't
-fall under the deterministic algorithm category.
+choices based on randomness or chance. So we know for sure that EAs
+don't fall under the deterministic algorithm category.
+
+In our case study, the individuals are considered to be the Neural
+Networks that we are trying to evolve.
+
+    \hypertarget{components-of-evolutionary-algorithms}{%
+\subsubsection{{[}3{]} Components of Evolutionary
+Algorithms}\label{components-of-evolutionary-algorithms}}
+
+In the following line we are going to describe the basic components
+which make up an EA.
+
+\begin{itemize}
+\tightlist
+\item
+  Representation (how the individuals are encoded in our algorithm)
+\item
+  Fitness measurement method
+\item
+  Population
+\item
+  Parent selection strategy
+\item
+  Crossover
+\item
+  Mutation
+\item
+  Replacement mechanism
+\end{itemize}
+
+\hypertarget{representation}{%
+\paragraph{Representation}\label{representation}}
+
+Usually the first step in implementing our EA is choosing a
+representation. We need to map or translate the objects in the real
+world space to our defined solution space. The terminology for the
+objects in the real world space is phenotypes and the one for the
+objects in our solution space (EA space) is genotypes.
+
+As an example, consider the following problem: Given an undirected
+graph, find the path with the most nodes. This problem is part of the
+NP-Complete problem class (which we are not going to prove now). The
+individual in our EA is the path (a sequence of linked nodes). The
+phenotype is the path itself. One genotype can be a binary number which
+has 1 on pozition j for j node is in sequence, 0 otherwise (even though
+this genotype doens't conside the order of the nodes, but this might not
+be a concern in our algorithm). Another genotype can be a simple list of
+ordered nodes. \#\#\#\# Fitness The role of the fitness function is to
+objectively measure how close is one individual to the desired solution.
+Based on this metric we can decide if one individual is fit enough to
+continue in our population or is not fit enought and needs to be
+replaced by better individuals (natural selection) \#\#\#\# Population
+The population is the set of individuals at some point (any point) in
+our EA. It can be seen as a set of genotypes of many generations. The
+genotypes themselfs is not evloving in any way, but the population is,
+through the creation of the new and more fit genotypes.
+
+An important metric here is the diversity of the population which
+measures how many different solution we have. To maintain diversity we
+need to give weaker genotypes a chance to reporoduce, because they might
+have valuable genetic material which combined with the right
+counterparty, might give us a fit individual. A population which is not
+diverse, tends to converge with the best fitness and might never give us
+a fit enough individual. Elitism in a EA (often chosing the best) can
+damage the diversity. This is the equivalent of a greedy algorithm which
+at each given step, it chooses only the local optimum. \#\#\#\# Parent
+selection The parent selection mechanism is the rule by which we allow
+individuals to bring offsprings into the population by combining their
+genes (becoming parents). In this part we get to choose parents, mosty
+based on their quality (fitness) but also based on some stochastic
+elements.
+
+The reason that we are introducing stochastic elements here, is that we
+want to avoid a homogenous population by giving the unfit individuals
+the chance to become parents so we can improve the diversity discuseed
+above.
+
+\hypertarget{crossover}{%
+\paragraph{Crossover}\label{crossover}}
+
+The crossover operation has two genotypes as input and one or two
+offspring(s) as an output. By mergeing the genes of the input
+individuals, we are able to create the offspring which inherits traits
+from the parents and probabilistically has a higher fitness.
+
+In the designing of our EA, it is crucial to choose a good crossover
+mechanism. \#\#\#\# Mutation Mutation naturally happenes in the real
+world. But in EAs are a method of keeping the population diverse. When
+is born through crossover, the genotype has a pre-defined chance to
+become mutated. It means that the features inherited from the parents
+are slightly changed. \#\#\#\# Replacement Replacement distinguishes
+individual based on their fitness and age (with stochastic influences).
+It is used to eliminate the individuals that haven't proved themselfs to
+have any value to the evolution process, or just the genotypes that are
+unfortunately chosen by the stochastic elements (which translates into
+environmental hazard). This is mostly one in the same step as the Parent
+selection part, when the individuals that are not selected for
+reproduction, are disposed from the populaiton.
 
     \hypertarget{b.-artificial-neural-networks}{%
 \subsection{B. Artificial Neural
 Networks}\label{b.-artificial-neural-networks}}
-
-    \hypertarget{c.-convolutional-neural-networks}{%
-\subsection{C. Convolutional Neural
-Networks}\label{c.-convolutional-neural-networks}}
 
     \hypertarget{d.-integration}{%
 \subsection{D. Integration}\label{d.-integration}}
@@ -472,6 +570,166 @@ Networks}\label{c.-convolutional-neural-networks}}
     \hypertarget{feasability-and-impact-analysis}{%
 \section{4. Feasability and Impact
 Analysis}\label{feasability-and-impact-analysis}}
+
+In implementarea algoritmului, s-au folosit mai multe iterații, in care
+se testa algoritmul, se observau unele metrici și se luau decizii
+ulterioare de implementare.
+
+În găsirea rețelei optime, algoritmul curent consideră hiperparametrii:
+
+Numarul de straturi Marimea unui strat Pentru rețele neuronale s-a
+folosit Keras cu back-end Tensor Flow. In implementarea codului s-au
+folosit clase care impacheteaza comportamentul din Keras și a căror
+utilitate este de a furniza API pentru lucrul cu algoritmii evolutivi.
+La bază algoritmii evolutivi folosiți sunt stocastici.
+
+In implementarea inițială avem functia de selectie naturala, care
+primeste lista indivizilor sortata descrescator dupa fitness. Se iau
+oricare 2 indivizi cu indicele i si j, si se calculeaza sansa lor de a
+se reproduce, astfel:
+
+    \[\frac{i \cdot j}{{(n - 1)}^{2}}\]
+
+    S-a implementat si o selecție pentru deces, ce ia in considerare o șansă
+calculată proporțional cu fitness-ul individului, precum și vârsta
+individului (exprimata in număr de generații). Pentru in individ i,
+șansa acestuia de a deceda este calculata astfel:
+
+    \[\frac{a \cdot (1 - i / n)}{E}\]
+
+Unde E = speranța de viață și n = numărul total de indivizi
+
+    \hypertarget{metrici-ux219i-testare}{%
+\section{Metrici și testare}\label{metrici-ux219i-testare}}
+
+In testarea algoritmului s-a folosit problema clasică de recunoaștere a
+caracterelor, cu baza de date MNIST. Indivizii inițiali au fost dați ca
+și input.
+
+    \hypertarget{iteratia-1}{%
+\subsection{Iteratia 1}\label{iteratia-1}}
+
+\hypertarget{parametrii}{%
+\subsubsection{Parametrii}\label{parametrii}}
+
+Life expectancy: 3
+
+\hypertarget{uxeencruciux219are}{%
+\subsubsection{Încrucișare}\label{uxeencruciux219are}}
+
+Incrucișarea rețelelor s-a facut prin combinarea straturilor.
+
+In cazul in care o rețea are mai multe straturi ca cealaltă, se face un
+sampling aleatoriu pe rețeaua cu mai multe straturi, se aleg straturile
+pentru incrucișare si se incrucișeaza straturile alese cu straturile
+rețelei mai mici ca număr de straturi. Lucrul negativ aici este că un
+genele unui individ pot fi dominante, in timp ce genele celuilalt
+individ pot fi nule în individul rezultat.
+
+\hypertarget{fitness}{%
+\subsubsection{Fitness}\label{fitness}}
+
+Calculul fitness-ului se bazeaza exclusiv pe precizia rețelei neuronale.
+
+\hypertarget{metrici}{%
+\subsubsection{Metrici}\label{metrici}}
+
+\begin{itemize}
+\tightlist
+\item
+  Fitness trend
+
+  \includegraphics{gfx/fitness-trend-tne-1.png}
+\item
+  Generation size
+
+  \includegraphics{gfx/generation-size-tne-1.png}
+\end{itemize}
+
+    \hypertarget{iteration-2}{%
+\subsection{Iteration 2}\label{iteration-2}}
+
+\hypertarget{parametrii}{%
+\subsubsection{Parametrii}\label{parametrii}}
+
+Life expectancy: 1.3
+
+\hypertarget{uxeencruciux219are}{%
+\subsubsection{Încrucișare}\label{uxeencruciux219are}}
+
+Unchanged.
+
+\hypertarget{fitness}{%
+\subsubsection{Fitness}\label{fitness}}
+
+Unchanged.
+
+\hypertarget{metrici}{%
+\subsubsection{Metrici}\label{metrici}}
+
+\begin{itemize}
+\tightlist
+\item
+  Fitness trend
+\end{itemize}
+
+We are now measuring also the maximum fitness of the population
+
+\includegraphics{gfx/fitness-trend-tne-2.png} * Generation size
+
+\begin{figure}
+\centering
+\includegraphics{gfx/generation-size-tne-2.png}
+\caption{title}
+\end{figure}
+
+    \hypertarget{observations}{%
+\subsection{Observations}\label{observations}}
+
+The main observations made throughout the first two iterations focuses
+on weak points of the algorithm:
+
+\begin{itemize}
+\item
+  One strong weakness is that the populaiton grows quickly.
+\item
+  This simply doesn't scale, because finding a good solution ot our
+  problem, we need to grow a certain amount of generations,
+  approximately 10. To grow 4 generations, the program ran for about
+  \textasciitilde{}12 hours. The conclusion drew by Generation Size
+  metric, this approach doesn't scale. To perform a crossover between
+  the genotypes of the generation 4 would take an unreasonably huge
+  amount of time.
+\item
+  Another observations here is that the average fitness converges to a
+  value. This means that the genotypes become homogenous. There is not
+  enough new genetical material and this will not help us raise the
+  maximum fitness either.
+\item
+  We can see how the maximum fitness increases, but not signtificanlty
+  enough to justify the need of such algorithms to find a better
+  solution. A significant fitness increase would be achieved by growing
+  a larger number of generations.
+\item
+  The crossover function can be also improved. When performing
+  crossover, we can consider all the genes of the individuals, without
+  too much domination from one party.
+\item
+  We can consider other hyperparameters in finding the optimal solution,
+  like initial weights and biases.
+\item
+  The fitness function can also consider the physical running time as a
+  quality of a genotype.
+\item
+  For the following iterations, we will use Tournament Selection for
+  selections. This should give us a controllable number of genotypes and
+  more generations to grow.
+\item
+  We can consider trying the same test but for other problems (which can
+  also be more complex) and other trainig data sets.
+\item
+  The input and the train data can be randomly sampled (k-fold)
+\end{itemize}
 
 
     % Add a bibliography block to the postdoc
