@@ -286,24 +286,6 @@
 \textbf{Autor: }Aiordăchioaei Marius \textbar{} \textbf{Îndrumător:
 }Suciu Mihai
 
-    \hypertarget{bibliografie}{%
-\section{Bibliografie}\label{bibliografie}}
-
-{[}1{]}
-\href{https://blog.coast.ai/lets-evolve-a-neural-network-with-a-genetic-algorithm-code-included-8809bece164}{Let's
-evolve a neural network with a genetic algorithm}
-
-{[}2{]} \href{http://neuralnetworksanddeeplearning.com/chap1.html}{Using
-neural nets to recognize handwritten digits}
-
-{[}3{]}
-\href{https://www.cs.vu.nl/~gusz/ecbook/Eiben-Smith-Intro2EC-Ch2.pdf}{What
-is an Evolutionary Algorithm}
-
-{[}4{]}
-\href{https://en.wikipedia.org/wiki/Computational_complexity}{Computational
-complexity}
-
     \hypertarget{table-of-contents}{%
 \section{Table of contents}\label{table-of-contents}}
 
@@ -558,14 +540,149 @@ reproduction, are disposed from the populaiton.
 \subsection{B. Artificial Neural
 Networks}\label{b.-artificial-neural-networks}}
 
+Artificial Neural Networks (ANN) is an approach to the Supervized
+Learning problems and are more and more used in multiple industries. The
+method inspires heavily from how our brain works, even though it is a
+overly-simplified process.
+
+\hypertarget{seen-as-black-box}{%
+\paragraph{Seen as Black-Box}\label{seen-as-black-box}}
+
+{[}2{]} An ANN, seen as a black-box entity, is composed of 3 parts:
+input layer, hidden layers and output layer. So here we have to deal
+with a layered architecture in which each layer is composed of neurons.
+
+\begin{figure}
+\centering
+\includegraphics{gfx/ann.jpg}
+\caption{General idea of ANN}
+\end{figure}
+
+As observed in the picture above, each neuron from one layer linked to
+all the neurons in the layer after (even though, is not really a
+constraint to be linked to all neurons).
+
+The supervized learning part means that we supervize the learning
+process by giving feedback to the performance of our ANN for each test.
+We tell to our ANN when is wrong, and more importantly, how much it is
+wrong, so it can learn not to output the same wrong value again (through
+methods that we are going to describe later).
+
+So, in our learning phase of the ANN, we are going to need training
+data, which consists of input values, and output values that are
+considered to be correct. Our ANN is going to learn to handle new
+inputs, and output values that are the desired ones, very much like how
+the brain learns.
+
+The quality of the output relies heavily on many factors, like: * The
+architecture of the ANN used. (how many hidden layers we use, the size
+of each layer, activation functions, etc.) * The quality of the training
+data. (training data needs to explore enough of the solution space if we
+want correct outputs)
+
+\hypertarget{seen-as-white-box}{%
+\paragraph{{[}2{]} Seen as White-Box}\label{seen-as-white-box}}
+
+The state of an ANN consists of some values called weights and biases.
+Learning process comes down to finding the right values for the weights
+and biases.
+
+\includegraphics{gfx/neuron.png} For each neuron, we have its input
+values from the previous layer (in case of the input layer, we will have
+only one single input value). We have weight values (noted as w) for
+each link to the previous layer. It represents the inportance we give to
+the input of the predecessor neuron.
+
+Altogether, the value outputed by our neuron will be
+\[ x_{1}\cdot w_{1} + x_{2}\cdot w_{2} + x_{3}\cdot w_{3} + b \] Where b
+is the bias
+
+Dependending on the type of the neutron, the output can be projected
+through different mathematical functions, such as sigmoid, softmax and
+linear rectifier. Such function is called activation function and also
+has impact on the overall performance of the ANN.
+
+The adjustment of the weight and bias values is done in the learning
+phase, through a method called error back propagation. First, it is
+calculated how far (in distance) is the output from the actual solution,
+and then the error is propagated back to the layers it came from. The
+weights and biases are recalculated in such manner that on the next
+evaluation with the same input, the outputed error will be smaller.
+
+For the error back propagation, a very used method is gradient descend.
+
     \hypertarget{d.-integration}{%
 \subsection{D. Integration}\label{d.-integration}}
+
+The two concepts described above go well hand in hand. We can define our
+phenotype as an ANN which is fit for having a better accuracy after a
+training session.
+
+This way we are will be able to find the right ANN architecture for our
+problem, without much effort.
+
+We need to define our genotype. As mentioned in the abstract, our
+genotype will consist of the ANN's hyperparameters. A hyperparameter is
+that value which is configured before the process of learning begins.
+
+The genotype can consider: * Number of the hidden layers * Size of each
+layer * Type of each layer along with activation function * Initial
+weights * Initial bias
+
+In the current state of the implementation, our genotype will regard
+only the number of hidden layers and the size of each hidden layer.
 
     \hypertarget{e.-classical-problems}{%
 \subsection{E. Classical Problems}\label{e.-classical-problems}}
 
+Here we are going to mention the Machine Learning problem on which we
+tested our algorithm.
+
+\hypertarget{digit-recognition}{%
+\subsubsection{{[}2{]} Digit Recognition}\label{digit-recognition}}
+
+This is the ``hello world'' of Machine Learning. In the testing, we used
+the \href{http://yann.lecun.com/exdb/mnist/}{MNIST} database. It
+provides 60,000 train instances along with 10,000 test instances. Each
+train instance is a picture of one of the 10 digits, in a bitmap format.
+The size of each bitmap is 28x28 pixels and the chromatic range of each
+pixel is one byte monochrome (so a color value ranges between 0-255).
+
+The way we are feeding this onto our ANN is: we have an input layer of
+28*28 = 784 neurons, one for each pixel. This is a classification
+problem, so the output layer have one neuron for each class, in our case
+10 neurons. Our ANN will evaluate how likely (in terms of chance) is for
+our input to be classified as each class. So if we sum the outputs of
+each neuron of the last layer, we need to get 1. To achieve the
+translation between the 0-255 ranged input values and probabilistic
+subunitary values we need to set the activation funciton of the last
+layer to softmax.
+
     \hypertarget{aplicability}{%
 \section{3. Aplicability}\label{aplicability}}
+
+As the practical part, I used for my case study different technologies
+and libraries: * All the code is implemented in Python. * For the ANN
+API I used Keras along with TensorFlow backend and for scalability
+concerns I used Tensor GPU to make tensor use specialized hardware for
+the learning workload. * For ploting certain metrics I logged parts of
+the algorithm and then extracted the information and plotted it using
+Matplotlib.
+
+To create a clear architecture of the code, I wrapped all the behaviour
+of the Keras library in some decorator classes so that I have a clear
+API which speaks Evolutive Algorithm terminology. For example, I wrapped
+the ANN which extends ``Individual'' class in such manner that the ANN
+is contracted to implement EA operations like crossover or mutate.
+
+\hypertarget{code-architecture}{%
+\subsection{Code architecture}\label{code-architecture}}
+
+\begin{figure}
+\centering
+\includegraphics{gfx/BachelorThesis.svg}
+\caption{Code architecture}
+\end{figure}
 
     \hypertarget{feasability-and-impact-analysis}{%
 \section{4. Feasability and Impact
@@ -595,44 +712,46 @@ calculată proporțional cu fitness-ul individului, precum și vârsta
 individului (exprimata in număr de generații). Pentru in individ i,
 șansa acestuia de a deceda este calculata astfel:
 
-    \[\frac{a \cdot (1 - i / n)}{E}\]
+    \[\frac{a \cdot (1 - \frac{i}{n})}{E}\]
 
 Unde E = speranța de viață și n = numărul total de indivizi
 
-    \hypertarget{metrici-ux219i-testare}{%
-\section{Metrici și testare}\label{metrici-ux219i-testare}}
+    \hypertarget{metrics-and-testing}{%
+\section{Metrics and testing}\label{metrics-and-testing}}
 
 In testarea algoritmului s-a folosit problema clasică de recunoaștere a
 caracterelor, cu baza de date MNIST. Indivizii inițiali au fost dați ca
 și input.
 
-    \hypertarget{iteratia-1}{%
-\subsection{Iteratia 1}\label{iteratia-1}}
+    \hypertarget{iteration-1}{%
+\subsection{Iteration 1}\label{iteration-1}}
 
-\hypertarget{parametrii}{%
-\subsubsection{Parametrii}\label{parametrii}}
+\hypertarget{parameters}{%
+\subsubsection{Parameters}\label{parameters}}
 
 Life expectancy: 3
 
-\hypertarget{uxeencruciux219are}{%
-\subsubsection{Încrucișare}\label{uxeencruciux219are}}
+\hypertarget{crossover}{%
+\subsubsection{Crossover}\label{crossover}}
 
-Incrucișarea rețelelor s-a facut prin combinarea straturilor.
+The crossover of the neural nets was done through the combination of the
+hidden layers.
 
-In cazul in care o rețea are mai multe straturi ca cealaltă, se face un
-sampling aleatoriu pe rețeaua cu mai multe straturi, se aleg straturile
-pentru incrucișare si se incrucișeaza straturile alese cu straturile
-rețelei mai mici ca număr de straturi. Lucrul negativ aici este că un
-genele unui individ pot fi dominante, in timp ce genele celuilalt
-individ pot fi nule în individul rezultat.
+In the case that the crossover parties have different numbers of layers,
+a random sampling happenes on the net with more layers. The size of the
+sampling is the number of layers of the one with fewer layers (lets call
+it A and the counterparty B). The bad thing here is that the genes of A
+can be proportionally dominant compared to B, as the layers of B, that
+are not included in the sampling, are discarded in the process.
 
 \hypertarget{fitness}{%
 \subsubsection{Fitness}\label{fitness}}
 
-Calculul fitness-ului se bazeaza exclusiv pe precizia rețelei neuronale.
+The calculation of the fitness is (currently) based only on the accuracy
+of the neural network.
 
-\hypertarget{metrici}{%
-\subsubsection{Metrici}\label{metrici}}
+\hypertarget{metrics}{%
+\subsubsection{Metrics}\label{metrics}}
 
 \begin{itemize}
 \tightlist
@@ -649,13 +768,13 @@ Calculul fitness-ului se bazeaza exclusiv pe precizia rețelei neuronale.
     \hypertarget{iteration-2}{%
 \subsection{Iteration 2}\label{iteration-2}}
 
-\hypertarget{parametrii}{%
-\subsubsection{Parametrii}\label{parametrii}}
+\hypertarget{parameters}{%
+\subsubsection{Parameters}\label{parameters}}
 
 Life expectancy: 1.3
 
-\hypertarget{uxeencruciux219are}{%
-\subsubsection{Încrucișare}\label{uxeencruciux219are}}
+\hypertarget{crossover}{%
+\subsubsection{Crossover}\label{crossover}}
 
 Unchanged.
 
@@ -664,8 +783,8 @@ Unchanged.
 
 Unchanged.
 
-\hypertarget{metrici}{%
-\subsubsection{Metrici}\label{metrici}}
+\hypertarget{metrics}{%
+\subsubsection{Metrics}\label{metrics}}
 
 \begin{itemize}
 \tightlist
@@ -730,6 +849,24 @@ on weak points of the algorithm:
 \item
   The input and the train data can be randomly sampled (k-fold)
 \end{itemize}
+
+    \hypertarget{bibliography}{%
+\section{Bibliography}\label{bibliography}}
+
+{[}1{]}
+\href{https://blog.coast.ai/lets-evolve-a-neural-network-with-a-genetic-algorithm-code-included-8809bece164}{Let's
+evolve a neural network with a genetic algorithm}
+
+{[}2{]} \href{http://neuralnetworksanddeeplearning.com/chap1.html}{Using
+neural nets to recognize handwritten digits}
+
+{[}3{]}
+\href{https://www.cs.vu.nl/~gusz/ecbook/Eiben-Smith-Intro2EC-Ch2.pdf}{What
+is an Evolutionary Algorithm}
+
+{[}4{]}
+\href{https://en.wikipedia.org/wiki/Computational_complexity}{Computational
+complexity}
 
 
     % Add a bibliography block to the postdoc
