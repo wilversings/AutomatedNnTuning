@@ -11,11 +11,12 @@ from KerasWrapper.Evolutionary.EvaluatedIndividual import EvaluatedIndividual
 from sortedcontainers import SortedList
 from random import random
 import json
+from math import ceil
 
 class Population:
     
     AGE_STRETCH = 1.3
-    PRESSURE_RATE  = 0.5
+    PRESSURE_RATE  = 0.8
     ELITISM_RATE = 0.1
 
     def __init__(self, initial_populaiton: list):
@@ -30,9 +31,9 @@ class Population:
         pop_len = len(pop_list)
 
         selected_ind = \
-            pop_list[0: int(pop_len * Population.ELITISM_RATE)] + \
-            [individual for i, individual in enumerate(pop_list) 
-             if Utils.uneven((1 - 1/pop_len) * Population.PRESSURE_RATE)]
+            pop_list[: ceil(pop_len * Population.ELITISM_RATE)] + \
+            [individual for i, individual in enumerate(pop_list)[ceil(pop_len * Population.ELITISM_RATE): ]
+             if Utils.uneven((1 - i/pop_len) * Population.PRESSURE_RATE)]
         sel_len = len(selected_ind)
 
         new_generation = [
