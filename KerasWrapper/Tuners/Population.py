@@ -15,6 +15,8 @@ import json
 class Population:
     
     AGE_STRETCH = 1.3
+    PRESSURE_RATE  = 0.5
+    ELITISM_RATE = 0.1
 
     def __init__(self, initial_populaiton: list):
         self._population = None
@@ -23,58 +25,31 @@ class Population:
         self._graveyard = []
         self._logger = logging.getLogger("population")
 
-    #@staticmethod
-    #def are_selected_for_reproduction(first, second, all):
-    #    if __debug__:
-    #        assert(first < second)
-    #        assert(second < all)
-
-    #    original_chance = (first + second) / 2 * all;
-    #    delta_chance = 1 / (second - first) * original_chance
-
-    #    return Utils.uneven(delta_chance)
-
-    def are_selected_for_reproduction(self, i: int, j: int):
-        n = len(self._population)
-        chance = i * j / (n - 1) ** 2
-        return Utils.uneven(chance)
-
-    def is_selected_for_death(self, individual: EvaluatedIndividual, i: int):
-        n = len(self._population)
-        chance = individual.individual.age / Population.AGE_STRETCH * (1 - i / n)
-        return Utils.uneven(chance)
-
     def reproduce(self, eval_data: EvaluationData):
         pop_list = list(self._population)
         pop_len = len(pop_list)
 
+        selected_ind = \
+            pop_list[0: int(pop_len * Population.ELITISM_RATE)] + \
+            [individual for i, individual in enumerate(pop_list) 
+             if Utils.uneven((1 - 1/pop_len) * Population.PRESSURE_RATE)]
+        sel_len = len(selected_ind)
+
         new_generation = [
             EvaluatedIndividual(
-                pop_list[i].individual
-                .crossover(pop_list[j].individual)
+                selected_ind[i].individual
+                .crossover(selected_ind[j].individual)
                 .mutate()
                 .compile(), 
                 eval_data
             )
-            for i in range(pop_len - 1)
-            for j in range(i + 1, pop_len)
-            if self.are_selected_for_reproduction(i, j)
+            for i in range(sel_len - 1)
+            for j in range(i + 1, sel_len)
         ]
-            
-        for individual in pop_list:
-            individual.individual.increase_age()
 
-        self._population.update(new_generation)
+        self._population = SortedList(selected_ind + new_generation)
 
         self._logger.info("Reproduction: new individuals: %d, total individuals: %d", len(new_generation), len(self._population))
-
-    def replace(self):
-        selected = filter(lambda x: self.is_selected_for_death(x[1], x[0]), enumerate(self._population))
-        for sel in selected:
-            self._graveyard.append(sel[1])
-            self._population.discard(sel[1])
-
-            self._logger.info("{} died!".format(sel[1].individual.name))
 
     def generation_report(self, i):
 
@@ -100,7 +75,6 @@ class Population:
 
             self._logger.info("Started growing generation %d...", i + 1)
             self.reproduce(eval_data)
-            self.replace()
 
             if not self.generation_report(i + 1):
                 break
