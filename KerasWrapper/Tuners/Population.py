@@ -15,9 +15,9 @@ from math import ceil
 
 class Population:
     
-    AGE_STRETCH = 1.3
-    PRESSURE_RATE  = 0.8
+    PRESSURE_RATE  = 0.3
     ELITISM_RATE = 0.1
+    TOURNAMENT_SIZE = 9
 
     def __init__(self, initial_populaiton: list):
         self._population = None
@@ -27,13 +27,18 @@ class Population:
         self._logger = logging.getLogger("population")
 
     def reproduce(self, eval_data: EvaluationData):
-        pop_list = list(self._population)
+        pop_list = list(reversed(self._population))
         pop_len = len(pop_list)
 
-        selected_ind = \
-            pop_list[: ceil(pop_len * Population.ELITISM_RATE)] + \
-            [individual for i, individual in enumerate(pop_list)[ceil(pop_len * Population.ELITISM_RATE): ]
-             if Utils.uneven((1 - i/pop_len) * Population.PRESSURE_RATE)]
+        elite = ceil(pop_len * Population.ELITISM_RATE)
+        self._logger.info("Elite number: %d", elite)
+
+        mating_pool = \
+            [(1, individual) for individual in pop_list[: elite]] + \
+            [(1 - i * Population.PRESSURE_RATE/pop_len, individual) for i, individual in list(enumerate(pop_list))[elite: ]]
+
+        _, selected_ind = list(zip(*sorted(mating_pool, reverse=True)[:Population.TOURNAMENT_SIZE]))
+       
         sel_len = len(selected_ind)
 
         new_generation = [
@@ -48,7 +53,7 @@ class Population:
             for j in range(i + 1, sel_len)
         ]
 
-        self._population = SortedList(selected_ind + new_generation)
+        self._population = SortedList(new_generation + list(selected_ind))
 
         self._logger.info("Reproduction: new individuals: %d, total individuals: %d", len(new_generation), len(self._population))
 
@@ -68,7 +73,7 @@ class Population:
     def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         
         self._logger.info("Started growing generation 0...");
-        self._population = SortedList(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))
+        self._population = SortedList(list(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))*3)
 
         self.generation_report(0)
 

@@ -102,7 +102,6 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         return self
 
     def measure_fitness(self, data: EvaluationData):
-        
         if __debug__:
             assert(self.__k_model is not None)
 
