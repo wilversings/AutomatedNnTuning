@@ -31,7 +31,6 @@ class Population:
         pop_len = len(pop_list)
 
         elite = ceil(pop_len * Population.ELITISM_RATE)
-        self._logger.info("Elite number: %d", elite)
 
         mating_pool = \
             [(1, individual) for individual in pop_list[: elite]] + \
