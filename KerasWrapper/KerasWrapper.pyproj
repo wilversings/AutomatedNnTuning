@@ -32,10 +32,9 @@
     <Compile Include="Evolutionary\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Problems\CharRecognition.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Problems\ProblemBase.py">
+    <Compile Include="Problems\CharRecognition.py" />
+    <Compile Include="Problems\ProblemBase.py" />
+    <Compile Include="Problems\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tuners\Population.py">
@@ -85,7 +84,7 @@
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Ann\" />
     <Folder Include="Evolutionary\" />
     <Folder Include="Evolutionary\Config\" />
-    <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Problems\" />
+    <Folder Include="Problems\" />
     <Folder Include="Utility\" />
     <Folder Include="Tuners\" />
     <Folder Include="Wrappers\" />

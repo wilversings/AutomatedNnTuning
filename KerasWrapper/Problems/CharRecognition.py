@@ -1,4 +1,4 @@
-from ProblemBase import ProblemBase
+from KerasWrapper.Problems.ProblemBase import ProblemBase
 import numpy as np
 
 class CharRecognition(ProblemBase):
@@ -9,10 +9,10 @@ class CharRecognition(ProblemBase):
     def _load_data(self, uri):
         uri_train, uri_train_labels, uri_test, uri_test_labels = uri
 
-        train_in, train_out = parse(uri_train, uri_train_labels, 60000)
-        test_in, test_out = parse(uri_test, uri_test_labels, 10000)
+        train_in, train_out = CharRecognition.parse(uri_train, uri_train_labels, 60000)
+        test_in, test_out = CharRecognition.parse(uri_test, uri_test_labels, 10000)
 
-        return train_in + test_in, train_out + test_out
+        return list(zip(np.concatenate((train_in, test_in)), np.concatenate((train_out, test_out))))
 
     @staticmethod
     def parse(uri, uri_labels, batch_size):
@@ -26,11 +26,10 @@ class CharRecognition(ProblemBase):
 
         mnist = np.array_split(bytes, batch_size)
 
-        return np.array(mnist) / 255, np.array(map(CharRecognition.label_to_out_layer, label))
+        return np.array(mnist) / 255, np.array(list(map(CharRecognition.label_to_out_layer, label)))
     
     @staticmethod
     def label_to_out_layer(label):
         ans = [0] * 10
         ans[label] = 1
         return ans
-
