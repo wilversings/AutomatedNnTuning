@@ -8,6 +8,7 @@ from keras.layers.core import Dense
 import numpy as np
 from KerasWrapper.Tuners.Population import Population
 from KerasWrapper.Problems.CharRecognition import CharRecognition
+from KerasWrapper.Problems.HeartDesease import HeartDesease
 
 from tensorflow.python.client import device_lib
 
@@ -21,8 +22,10 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='general.log',
                     filemode='w')
 
-problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels')
-test_in, test_out, train_in, train_out = problem.perform_k_fold(10000)
+#problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels')
+#test_in, test_out, train_in, train_out = problem.perform_k_fold(10000)
+problem = HeartDesease('heartdesease.data');
+test_in, test_out, train_in, train_out = problem.perform_k_fold(60)
 
 pop = Population.from_json(open("populationConfig.json").read())
 

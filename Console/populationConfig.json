@@ -1,11 +1,11 @@
 {
   "type": "ArtificialNn",
-  "inputSize": 784,
-  "outputSize": 10,
+  "inputSize": 13,
+  "outputSize": 5,
   "clasfProb": true,
   "individuals": [
     {
-      "batchSize": 150,
+      "batchSize": 20,
       "epochs": 10,
       "layers": [
         {
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "batchSize": 50,
+      "batchSize": 21,
       "epochs": 8,
       "layers": [
         {
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "batchSize": 75,
+      "batchSize": 31,
       "epochs": 9,
       "layers": [
         {
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "batchSize": 50,
+      "batchSize": 10,
       "epochs": 3,
       "layers": [
         {
@@ -65,7 +65,7 @@
       ]
     },
     {
-      "batchSize": 140,
+      "batchSize": 25,
       "epochs": 10,
       "layers": [
         {
@@ -75,7 +75,7 @@
       ]
     },
     {
-      "batchSize": 139,
+      "batchSize": 23,
       "epochs": 9,
       "layers": [
         {

@@ -33,6 +33,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Problems\CharRecognition.py" />
+    <Compile Include="Problems\HeartDesease.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Problems\ProblemBase.py" />
     <Compile Include="Problems\__init__.py">
       <SubType>Code</SubType>
