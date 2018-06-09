@@ -93,14 +93,14 @@ class Population:
         pop_size:           int, 
         input_size:         int, 
         output_size:        int, 
-        clasfProb:          bool, 
+        clasf_prob:          bool, 
         layer_nr_range:     (int, int), 
         layer_size_range:   (int, int), 
-        batchSize:          int, 
+        batch_size:          int, 
         epochs:             int) -> 'Population':
         return Population([
-            copy(ArtificialNn(input_size, output_size, clasfProb))
-                .with_batch_size(batchSize)
+            copy(ArtificialNn(input_size, output_size, clasf_prob))
+                .with_batch_size(batch_size)
                 .with_epochs(epochs)
                 .with_layers([
                     LayerWrapper(
@@ -111,6 +111,7 @@ class Population:
 
                     for _ in range(randint(*layer_nr_range))
                 ])
+                .compile()
             for _ in range(pop_size)
         ])
 
