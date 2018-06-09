@@ -9,7 +9,7 @@ import logging
 from KerasWrapper.Utility.Utils import Utils
 from KerasWrapper.Evolutionary.EvaluatedIndividual import EvaluatedIndividual
 from sortedcontainers import SortedList
-from random import random
+from random import random, randint
 import json
 from math import ceil
 
@@ -34,7 +34,7 @@ class Population:
 
         mating_pool = \
             [(1, individual) for individual in pop_list[: elite]] + \
-            [(1 - i * Population.PRESSURE_RATE/pop_len, individual) for i, individual in list(enumerate(pop_list))[elite: ]]
+            [(1 - i * Population.PRESSURE_RATE / pop_len, individual) for i, individual in list(enumerate(pop_list))[elite: ]]
 
         _, selected_ind = list(zip(*sorted(mating_pool, reverse=True)[:Population.TOURNAMENT_SIZE]))
        
@@ -89,12 +89,30 @@ class Population:
         return self._population
 
     @staticmethod
+    def generate_rand_population(pop_size, input_size, output_size, clasfProb, layer_nr_range, layer_size_range, batchSize, epochs):
+        return Population([
+            copy(ArtificialNn(input_size, output_size, clasfProb))
+                .with_batch_size(batchSize)
+                .with_epochs(epochs)
+                .with_layers([
+                    LayerWrapper(
+                        size=           randint(*layer_size_range),
+                        activation=     "relu",
+                        init_weights=   None,
+                        init_biases=    None)
+
+                    for _ in range(randint(*layer_nr_range))
+                ])
+            for _ in range(pop_size)
+        ])
+
+    @staticmethod
     def from_blueprint(ann_blueprint: ArtificialNn, ann_list):
         population = [copy(ann_blueprint)
                       .with_batch_size(ann["batchSize"])
                       .with_epochs(ann["epochs"])
                       .with_layers([
-                          LayerWrapper(layer["size"], layer["activation"]) for layer in ann["layers"]
+                          LayerWrapper(layer["size"], layer["activation"], None, None) for layer in ann["layers"]
                       ])
                       .compile() for ann in ann_list]
         return Population(population)

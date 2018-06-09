@@ -29,11 +29,14 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
         k_layers = [
             Dense(
-                units=          self._layers[0].size, 
-                input_dim=      self._input_size)
-        ] + [Dense(
+                units=      self._layers[0].size, 
+                input_dim=  self._input_size,
+                #weights=    [self.layers[0].init_weights, self.layers[0].init_biases]
+        )] + [Dense(
                 units=      x.size, 
-                activation= x.activation) for x in self._layers[1:]
+                activation= x.activation,
+                #weights=    [x.init_weights, x.init_biases]
+             )  for x in self._layers[1:]
         ] + [Dense(
                 units=      self._output_size
             )]
@@ -84,11 +87,10 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         return ArtificialNn(self._input_size, self._output_size, self.__clasf_prob)\
             .with_layers(
                 # Crossover the choices
-                list(map(lambda x, y: x.crossover(y).mutate(), other_layers, self_layers))
+                [x.crossover(y).mutate() for x, y in zip(other_layers, self_layers)]
             )\
             .with_batch_size(
                 # Chose one random batch size from the two parts
-                # TODO: try with average
                 (self._batch_size + other._batch_size) // 2
             )\
             .with_epochs(

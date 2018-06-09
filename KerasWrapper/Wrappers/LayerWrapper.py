@@ -6,23 +6,20 @@ class LayerWrapper(Individual):
 
     MUTATION_CHANCE = 0.2
 
-    def __init__(self, size: int, activation):
+    def __init__(self, size: int, activation, init_weights, init_biases):
         
         # Hyperparameters that are configured by the Evolutive algorithm
         self._size = size
         self._activation = activation
+        self._init_weights = init_weights
+        self._init_biases = init_biases
 
-    @property
-    def size(self):
-        return self._size
-
-    @property
-    def activation(self):
-        return self._activation
     
     def crossover(self, other):
         return LayerWrapper((self._size + other._size) // 2,
-                            self._activation if Utils.flip_coin() else other._activation)
+                            self._activation if Utils.flip_coin() else other._activation,
+                            None,
+                            None)
 
     def mutate(self):
         if random() < self.MUTATION_CHANCE:
@@ -31,3 +28,19 @@ class LayerWrapper(Individual):
 
     def measure_fitness(self):
         raise NotImplementedError("Operation not supported. Cannot measure fitness of an layer")
+        
+    @property
+    def size(self):
+        return self._size
+
+    @property
+    def activation(self):
+        return self._activation
+
+    @property
+    def init_weights(self):
+        return self._init_weights
+
+    @property
+    def init_biases(self):
+        return self._init_biases
