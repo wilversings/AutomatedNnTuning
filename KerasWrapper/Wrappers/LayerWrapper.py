@@ -18,7 +18,7 @@ class LayerWrapper(Individual):
 
     
     def crossover(self, others: List['LayerWrapper']) -> 'LayerWrapper':
-        return LayerWrapper(size=           np.mean([self._size] + [x._size for x in others]),
+        return LayerWrapper(size=           np.mean([self._size] + [x._size for x in others], dtype=int),
                             activation=     choice([self._activation] + [x._activation for x in others]),
                             init_weights=   None,
                             init_biases=    None)
