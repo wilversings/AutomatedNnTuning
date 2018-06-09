@@ -20,11 +20,11 @@ class Individual(metaclass=ABCMeta):
         pass
 
     @property
-    def age(self):
+    def age(self) -> int:
         return self._age
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     def increase_age(self):

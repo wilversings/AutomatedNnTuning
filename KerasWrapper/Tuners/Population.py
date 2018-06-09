@@ -56,7 +56,7 @@ class Population:
 
         self._logger.info("Reproduction: new individuals: %d, total individuals: %d", len(new_generation), len(self._population))
 
-    def generation_report(self, i):
+    def generation_report(self, i) -> bool:
 
         pop_size = len(self._population)
 
@@ -85,11 +85,19 @@ class Population:
                 break
 
     @property
-    def population(self):
+    def population(self) -> SortedList:
         return self._population
 
     @staticmethod
-    def generate_rand_population(pop_size, input_size, output_size, clasfProb, layer_nr_range, layer_size_range, batchSize, epochs):
+    def generate_rand_population(
+        pop_size:           int, 
+        input_size:         int, 
+        output_size:        int, 
+        clasfProb:          bool, 
+        layer_nr_range:     (int, int), 
+        layer_size_range:   (int, int), 
+        batchSize:          int, 
+        epochs:             int) -> 'Population':
         return Population([
             copy(ArtificialNn(input_size, output_size, clasfProb))
                 .with_batch_size(batchSize)
@@ -107,7 +115,7 @@ class Population:
         ])
 
     @staticmethod
-    def from_blueprint(ann_blueprint: ArtificialNn, ann_list):
+    def from_blueprint(ann_blueprint: ArtificialNn, ann_list) -> 'Population':
         population = [copy(ann_blueprint)
                       .with_batch_size(ann["batchSize"])
                       .with_epochs(ann["epochs"])

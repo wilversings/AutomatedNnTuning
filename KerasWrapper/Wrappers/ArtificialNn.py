@@ -12,7 +12,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
     MUTATION_CHANCE = 0.2
 
-    def __init__(self, input_size, output_size, clasf_prob: bool):
+    def __init__(self, input_size: int, output_size: int, clasf_prob: bool):
         
         NeuralNetWrapper.__init__(self, input_size, output_size)
         Individual.__init__(self)
@@ -20,7 +20,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         self.__clasf_prob = clasf_prob
         self.__k_model = None
 
-    def compile(self):
+    def compile(self) -> 'ArtificialNn':
         """
         Compiles the ArtificialNn decorator into a real Keras object,
         with regard about the input, hidden & output layers
@@ -61,7 +61,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
 
         return self
 
-    def crossover(self, other):
+    def crossover(self, other: 'ArtificialNn') -> 'ArtificialNn':
         """
         Performs a crossover of the current Neural Network with another one
 
@@ -103,7 +103,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             self._batch_size = self._batch_size + choice([-1, 1])
         return self
 
-    def measure_fitness(self, data: EvaluationData):
+    def measure_fitness(self, data: EvaluationData) -> float:
         if __debug__:
             assert(self.__k_model is not None)
 

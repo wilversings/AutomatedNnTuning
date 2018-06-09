@@ -1,5 +1,6 @@
 from KerasWrapper.Problems.ProblemBase import ProblemBase
 import numpy as np
+from typing import List
 
 class CharRecognition(ProblemBase):
     
@@ -29,7 +30,7 @@ class CharRecognition(ProblemBase):
         return np.array(mnist) / 255, np.array(list(map(CharRecognition.label_to_out_layer, label)))
     
     @staticmethod
-    def label_to_out_layer(label):
+    def label_to_out_layer(label: int) -> List[int]:
         ans = [0] * 10
         ans[label] = 1
         return ans

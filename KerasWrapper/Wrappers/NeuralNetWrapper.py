@@ -4,7 +4,6 @@ from abc import abstractmethod
 from abc import ABC
 from keras.models import Sequential
 
-
 class NeuralNetWrapper(ABC):
 
     def __init__(self, input_size, output_size):
@@ -22,15 +21,15 @@ class NeuralNetWrapper(ABC):
     def compile(self):
         pass
 
-    def with_epochs(self, epochs):
+    def with_epochs(self, epochs: int) -> 'NeuralNetWrapper':
         self._epochs = epochs
         return self
 
-    def with_batch_size(self, batch_size):
+    def with_batch_size(self, batch_size: int) -> 'NeuralNetWrapper':
         self._batch_size = batch_size
         return self
 
-    def with_layers(self, layers: List[LayerWrapper]):
+    def with_layers(self, layers: List[LayerWrapper]) -> 'NeuralNetWrapper':
 
         if __debug__:
             assert(len(layers) >= 1)
@@ -39,5 +38,5 @@ class NeuralNetWrapper(ABC):
         return self
 
     @property
-    def layers(self):
+    def layers(self) -> List[LayerWrapper]:
         return self._layers

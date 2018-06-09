@@ -1,9 +1,14 @@
-
+import numpy as np
 
 
 class EvaluationData:
 
-    def __init__(self, test_in, test_out, train_in, train_out):
+    def __init__(self, 
+                 test_in:   list,
+                 test_out:  list,
+                 train_in:  list, 
+                 train_out: list):
+
         self._test_in = test_in
         self._test_out = test_out
         self._train_in = train_in

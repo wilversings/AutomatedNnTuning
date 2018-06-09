@@ -1,4 +1,5 @@
 from KerasWrapper.Problems.ProblemBase import ProblemBase
+from typing import List
 
 class HeartDesease(ProblemBase):
 
@@ -12,7 +13,7 @@ class HeartDesease(ProblemBase):
             return ans
 
     @staticmethod
-    def val_to_out_layer(val):
+    def val_to_out_layer(val: int) -> List[int]:
         ans = [0] * 5
         ans[val] = 1
         return ans
