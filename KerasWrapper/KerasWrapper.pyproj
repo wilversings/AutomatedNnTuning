@@ -46,9 +46,6 @@
     <Compile Include="Tuners\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utility\JsonConfigManager.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Utility\Utils.py">
       <SubType>Code</SubType>
     </Compile>

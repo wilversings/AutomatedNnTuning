@@ -116,17 +116,6 @@ class Population:
         ])
 
     @staticmethod
-    def from_blueprint(ann_blueprint: ArtificialNn, ann_list) -> 'Population':
-        population = [copy(ann_blueprint)
-                      .with_batch_size(ann["batchSize"])
-                      .with_epochs(ann["epochs"])
-                      .with_layers([
-                          LayerWrapper(layer["size"], layer["activation"], None, None) for layer in ann["layers"]
-                      ])
-                      .compile() for ann in ann_list]
-        return Population(population)
-
-    @staticmethod
     def from_json(json_config: str):
         config = json.loads(json_config)
         JsonConfigManager.validate_population_config(config)
