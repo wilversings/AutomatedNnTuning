@@ -11,7 +11,7 @@ import logging
 class ArtificialNn(NeuralNetWrapper, Individual):
 
     MUTATION_CHANCE = 0.2
-
+    
     def __init__(self, input_size: int, output_size: int, clasf_prob: bool):
         
         NeuralNetWrapper.__init__(self, input_size, output_size)
@@ -81,13 +81,23 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             # Make sure that self_layers has less layers than ctp_layers
             self_layers, other_layers = other_layers, self_layers
 
-        # Chose random samples from the net with more layers
-        other_layers = Utils.ordered_sample(other_layers, len(self_layers))
+        ## Chose random samples from the net with more layers
+        #other_layers = Utils.ordered_sample(other_layers, len(self_layers))
+        ans_layer_nr = (len(other_layers) + len(self_layers)) // 2
+
+        linsamples = Utils.linspace(len(other_layers), ans_layer_nr)
+        rev_linsamples = Utils.linspace(len(self_layers) - 1, ans_layer_nr)
+
+        new_layers = []
+        trail = 0
+        for sample, rev_sample in zip(linsamples, rev_linsamples):
+            new_layers.append(self_layers[rev_sample].crossover(other_layers[trail:sample]).mutate())
+            trail = sample
 
         return ArtificialNn(self._input_size, self._output_size, self.__clasf_prob)\
             .with_layers(
                 # Crossover the choices
-                [x.crossover(y).mutate() for x, y in zip(other_layers, self_layers)]
+                new_layers
             )\
             .with_batch_size(
                 # Chose one random batch size from the two parts
@@ -108,7 +118,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             assert(self.__k_model is not None)
 
         self.__k_model.fit(data.train_in, data.train_out,
-                           epochs=self._epochs, batch_size=self._batch_size, verbose=2)
+                           epochs=self._epochs, batch_size=self._batch_size, verbose=0)
 
-        loss_and_metrics = self.__k_model.evaluate(data.test_in, data.test_out, verbose=2)
+        loss_and_metrics = self.__k_model.evaluate(data.test_in, data.test_out, verbose=0)
         return loss_and_metrics[1]

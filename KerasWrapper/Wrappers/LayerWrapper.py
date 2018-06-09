@@ -1,6 +1,8 @@
 from KerasWrapper.Evolutionary.Individual import Individual
 from KerasWrapper.Utility.Utils import Utils
 from random import choice, random
+from typing import List
+import numpy as np
 
 class LayerWrapper(Individual):
 
@@ -15,9 +17,9 @@ class LayerWrapper(Individual):
         self._init_biases = init_biases
 
     
-    def crossover(self, other: 'LayerWrapper') -> 'LayerWrapper':
-        return LayerWrapper(size=           (self._size + other._size) // 2,
-                            activation=     self._activation if Utils.flip_coin() else other._activation,
+    def crossover(self, others: List['LayerWrapper']) -> 'LayerWrapper':
+        return LayerWrapper(size=           np.mean([self._size] + [x._size for x in others]),
+                            activation=     choice([self._activation] + [x._activation for x in others]),
                             init_weights=   None,
                             init_biases=    None)
 

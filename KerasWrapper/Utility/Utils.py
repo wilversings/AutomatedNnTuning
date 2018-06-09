@@ -1,5 +1,6 @@
 from random import choice, sample, random
 from typing import List
+import numpy as np
 
 class Utils(object):
 
@@ -10,6 +11,10 @@ class Utils(object):
     @staticmethod
     def uneven(chance: float) -> bool:
         return random() < chance
+
+    @staticmethod
+    def linspace(n: int, k: int):
+        return np.linspace(0, n, k, dtype=int)
 
     @staticmethod
     def ordered_sample(list: List, k: int) -> List:

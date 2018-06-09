@@ -61,9 +61,6 @@
     <Compile Include="Wrappers\ArtificialNn.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Wrappers\ConvolutionalNn.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Wrappers\LayerWrapper.py">
       <SubType>Code</SubType>
     </Compile>
