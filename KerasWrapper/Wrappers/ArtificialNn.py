@@ -31,11 +31,11 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             Dense(
                 units=      self._layers[0].size, 
                 input_dim=  self._input_size,
-                #weights=    [self.layers[0].init_weights, self.layers[0].init_biases]
+                weights=    [self.layers[0].init_weights, self.layers[0].init_biases]
         )] + [Dense(
                 units=      x.size, 
                 activation= x.activation,
-                #weights=    [x.init_weights, x.init_biases]
+                weights=    [x.init_weights, x.init_biases]
              )  for x in self._layers[1:]
         ] + [Dense(
                 units=      self._output_size
@@ -118,7 +118,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             assert(self.__k_model is not None)
 
         self.__k_model.fit(data.train_in, data.train_out,
-                           epochs=self._epochs, batch_size=self._batch_size, verbose=0)
+                           epochs=self._epochs, batch_size=self._batch_size, verbose=2)
 
-        loss_and_metrics = self.__k_model.evaluate(data.test_in, data.test_out, verbose=0)
+        loss_and_metrics = self.__k_model.evaluate(data.test_in, data.test_out, verbose=2)
         return loss_and_metrics[1]

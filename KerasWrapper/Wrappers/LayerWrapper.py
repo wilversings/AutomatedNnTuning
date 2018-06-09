@@ -20,8 +20,8 @@ class LayerWrapper(Individual):
     def crossover(self, others: List['LayerWrapper']) -> 'LayerWrapper':
         return LayerWrapper(size=           np.mean([self._size] + [x._size for x in others], dtype=int),
                             activation=     choice([self._activation] + [x._activation for x in others]),
-                            init_weights=   None,
-                            init_biases=    None)
+                            init_weights=   self._init_biases,
+                            init_biases=    self._init_weights)
 
     def mutate(self) -> 'LayerWrapper':
         if random() < self.MUTATION_CHANCE:

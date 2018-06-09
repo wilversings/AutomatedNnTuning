@@ -11,6 +11,8 @@ from sortedcontainers import SortedList
 from random import random, randint
 import json
 from math import ceil
+from typing import List
+import numpy as np
 
 class Population:
     
@@ -21,6 +23,7 @@ class Population:
     def __init__(self, initial_populaiton: list):
         self._population = None
         self._population_raw = initial_populaiton
+
 
         self._graveyard = []
         self._logger = logging.getLogger("population")
@@ -88,6 +91,24 @@ class Population:
         return self._population
 
     @staticmethod
+    def _set_weights_and_biases(layers: List[LayerWrapper], pop_input_size: int) -> List[LayerWrapper]:
+        
+        layers[0] = LayerWrapper(
+                size=           layers[0].size,
+                activation=     'relu',
+                init_weights=   np.random.rand(pop_input_size, layers[0].size),
+                init_biases=    np.random.rand(layers[0].size)
+            )
+        for i in range(1, len(layers)):
+            layers[i] = LayerWrapper(
+                size=           layers[i].size,
+                activation=     'relu',
+                init_weights=   np.random.rand(layers[i - 1].size, layers[i].size),
+                init_biases=    np.random.rand(layers[i].size)
+            )
+        return layers
+
+    @staticmethod
     def generate_rand_population(
         pop_size:           int, 
         input_size:         int, 
@@ -101,7 +122,7 @@ class Population:
             copy(ArtificialNn(input_size, output_size, clasf_prob))
                 .with_batch_size(batch_size)
                 .with_epochs(epochs)
-                .with_layers([
+                .with_layers(Population._set_weights_and_biases([
                     LayerWrapper(
                         size=           randint(*layer_size_range),
                         activation=     "relu",
@@ -109,7 +130,7 @@ class Population:
                         init_biases=    None)
 
                     for _ in range(randint(*layer_nr_range))
-                ])
+                ], input_size))
                 .compile()
             for _ in range(pop_size)
         ])
