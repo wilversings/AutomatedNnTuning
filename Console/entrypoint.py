@@ -21,51 +21,6 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='general.log',
                     filemode='w')
 
-#def parse_train():
-#    with open('train/mnist', 'rb') as mnist:
-#        mnist.seek(0x10)
-#        bytes = np.ndarray.astype(np.array(bytearray(mnist.read())), 'int16')
-
-#    with open('train/mnist_labels', 'rb') as labels:
-#        labels.seek(8)
-#        label = bytearray(labels.read())
-
-#    mnist = np.array_split(bytes, 60000)
-
-#    assert(mnist[-1].shape[0] == 28 * 28)
-#    assert(len(mnist) == 60000 and len(label) == 60000)
-
-#    return mnist, label
-
-#def parse_test():
-#    with open('test/mnist_test', 'rb') as mnist:
-#        mnist.seek(0x10)
-#        bytes = np.ndarray.astype(np.array(bytearray(mnist.read())), 'int16')
-
-#    with open('test/mnist_test_labels', 'rb') as labels:
-#        labels.seek(8)
-#        label = bytearray(labels.read())
-
-#    mnist = np.array_split(bytes, 10000)
-
-#    assert(len(mnist) == 10000 and len(label) == 10000)
-#    return mnist, label
-
-#def label_to_out_layer(label):
-
-#    ans = [0] * 10
-#    ans[label] = 1
-#    return ans
-
-#train_in, train_out = parse_train();
-#train_out = np.array(list(map(label_to_out_layer, train_out)))
-
-#test_in, test_out = parse_test()
-#test_out = np.array(list(map(label_to_out_layer, test_out)))
-
-#train_in = np.array(train_in) / 255
-#test_in = np.array(test_in) / 255
-
 problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels')
 test_in, test_out, train_in, train_out = problem.perform_k_fold(10000)
 
