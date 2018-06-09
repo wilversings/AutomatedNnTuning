@@ -1,6 +1,5 @@
 from KerasWrapper.Evolutionary.Individual import Individual
 from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
-from KerasWrapper.Utility.JsonConfigManager import JsonConfigManager
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
@@ -114,19 +113,3 @@ class Population:
                 .compile()
             for _ in range(pop_size)
         ])
-
-    @staticmethod
-    def from_json(json_config: str):
-        config = json.loads(json_config)
-        JsonConfigManager.validate_population_config(config)
-
-        if config["type"] == "ArtificialNn":
-            return Population.from_blueprint(
-                ArtificialNn(
-                    config["inputSize"],
-                    config["outputSize"],
-                    config["clasfProb"]
-                ), 
-                config["individuals"]
-            )
-
