@@ -16,10 +16,10 @@ class LayerWrapper(Individual):
 
     
     def crossover(self, other: 'LayerWrapper') -> 'LayerWrapper':
-        return LayerWrapper((self._size + other._size) // 2,
-                            self._activation if Utils.flip_coin() else other._activation,
-                            None,
-                            None)
+        return LayerWrapper(size=           (self._size + other._size) // 2,
+                            activation=     self._activation if Utils.flip_coin() else other._activation,
+                            init_weights=   None,
+                            init_biases=    None)
 
     def mutate(self) -> 'LayerWrapper':
         if random() < self.MUTATION_CHANCE:

@@ -75,15 +75,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Evolutionary\Config\populationConfig.example.json" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Ann\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Wrappers\" />
     <Folder Include="C:\Users\Marius\source\repos\BachelorThesis\KerasWrapper\Ann\" />
     <Folder Include="Evolutionary\" />
-    <Folder Include="Evolutionary\Config\" />
     <Folder Include="Problems\" />
     <Folder Include="Utility\" />
     <Folder Include="Tuners\" />

@@ -92,10 +92,10 @@ class Population:
         pop_size:           int, 
         input_size:         int, 
         output_size:        int, 
-        clasf_prob:          bool, 
+        clasf_prob:         bool, 
         layer_nr_range:     (int, int), 
         layer_size_range:   (int, int), 
-        batch_size:          int, 
+        batch_size:         int, 
         epochs:             int) -> 'Population':
         return Population([
             copy(ArtificialNn(input_size, output_size, clasf_prob))
