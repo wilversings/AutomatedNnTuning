@@ -1,6 +1,7 @@
 import unittest
 from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 
+
 class Test_TestLayerWrapper(unittest.TestCase):
 
     def test_crossover(self):
@@ -17,6 +18,7 @@ class Test_TestLayerWrapper(unittest.TestCase):
         grandchild = l3.crossover(child)
         self.assertEqual(grandchild.size, 3)
         self.assertEqual(grandchild.activation, "softmax")
+
 
 if __name__ == '__main__':
     unittest.main()

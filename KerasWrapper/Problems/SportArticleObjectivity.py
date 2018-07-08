@@ -14,5 +14,5 @@ class SportArticleObjectivity(ProblemBase):
             return [1, 0]
         elif val == "subjective":
             return [0, 1]
-        assert(False)
+        assert False
 
