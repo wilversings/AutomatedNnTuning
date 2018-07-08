@@ -8,16 +8,16 @@ from keras.models import Sequential
 from keras.layers.core import Dense
 import logging
 
+
 class ArtificialNn(NeuralNetWrapper, Individual):
 
     MUTATION_CHANCE = 0.2
     
-    def __init__(self, input_size: int, output_size: int, clasf_prob: bool):
+    def __init__(self, input_size: int, output_size: int):
         
         NeuralNetWrapper.__init__(self, input_size, output_size)
         Individual.__init__(self)
 
-        self.__clasf_prob = clasf_prob
         self.__k_model = None
 
     def compile(self) -> 'ArtificialNn':
@@ -31,11 +31,11 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             Dense(
                 units=      self._layers[0].size, 
                 input_dim=  self._input_size,
-                weights=    [self.layers[0].init_weights, self.layers[0].init_biases]
+                #weights=    [self.layers[0].init_weights, self.layers[0].init_biases]
         )] + [Dense(
                 units=      x.size, 
                 activation= x.activation,
-                weights=    [x.init_weights, x.init_biases]
+                #weights=    [x.init_weights, x.init_biases]
              )  for x in self._layers[1:]
         ] + [Dense(
                 units=      self._output_size
@@ -45,12 +45,9 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         
         for layer in k_layers:
             model.add(layer)
-              
-        if self.__clasf_prob:
-            model.add(Activation("softmax"))
-        else:
-            # TODO: this
-            pass
+
+        # Use softmax only for classification problems
+        model.add(Activation("softmax"))
 
         model.compile(loss='categorical_crossentropy',
                 #TODO: make optimizer a gene
@@ -81,22 +78,21 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             # Make sure that self_layers has less layers than ctp_layers
             self_layers, other_layers = other_layers, self_layers
 
-        ## Chose random samples from the net with more layers
-        #other_layers = Utils.ordered_sample(other_layers, len(self_layers))
+        # Chose random samples from the net with more layers
+        # other_layers = Utils.ordered_sample(other_layers, len(self_layers))
         ans_layer_nr = (len(other_layers) + len(self_layers)) // 2
 
         linsamples = Utils.linspace(len(other_layers), ans_layer_nr)
         rev_linsamples = Utils.linspace(len(self_layers) - 1, ans_layer_nr)
 
         new_layers = []
-        trail = 0
-        for sample, rev_sample in zip(linsamples, rev_linsamples):
+        trail = linsamples[0]
+        for sample, rev_sample in list(zip(linsamples, rev_linsamples))[1:]:
             new_layers.append(self_layers[rev_sample].crossover(other_layers[trail:sample]).mutate())
             trail = sample
 
-        return ArtificialNn(self._input_size, self._output_size, self.__clasf_prob)\
+        return ArtificialNn(self._input_size, self._output_size)\
             .with_layers(
-                # Crossover the choices
                 new_layers
             )\
             .with_batch_size(

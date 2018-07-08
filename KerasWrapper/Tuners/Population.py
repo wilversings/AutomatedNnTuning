@@ -14,6 +14,7 @@ from math import ceil
 from typing import List
 import numpy as np
 
+
 class Population:
     
     PRESSURE_RATE  = 0.3
@@ -91,21 +92,21 @@ class Population:
         return self._population
 
     @staticmethod
-    def _set_weights_and_biases(layers: List[LayerWrapper], pop_input_size: int) -> List[LayerWrapper]:
+    def _create_layers(sizes: List[int], pop_input_size: int) -> List[LayerWrapper]:
         
-        layers[0] = LayerWrapper(
-                size=           layers[0].size,
+        layers = [LayerWrapper(
+                size=           sizes[0],
                 activation=     'relu',
-                init_weights=   np.random.rand(pop_input_size, layers[0].size),
-                init_biases=    np.random.rand(layers[0].size)
-            )
-        for i in range(1, len(layers)):
-            layers[i] = LayerWrapper(
-                size=           layers[i].size,
+                init_weights=   np.random.rand(pop_input_size, sizes[0]),
+                init_biases=    np.random.rand(sizes[0])
+            )]
+        for i in range(1, len(sizes)):
+            layers.append(LayerWrapper(
+                size=           sizes[i],
                 activation=     'relu',
-                init_weights=   np.random.rand(layers[i - 1].size, layers[i].size),
-                init_biases=    np.random.rand(layers[i].size)
-            )
+                init_weights=   np.random.rand(sizes[i - 1], sizes[i]),
+                init_biases=    np.random.rand(sizes[i])
+            ))
         return layers
 
     @staticmethod
@@ -122,13 +123,8 @@ class Population:
             copy(ArtificialNn(input_size, output_size, clasf_prob))
                 .with_batch_size(batch_size)
                 .with_epochs(epochs)
-                .with_layers(Population._set_weights_and_biases([
-                    LayerWrapper(
-                        size=           randint(*layer_size_range),
-                        activation=     "relu",
-                        init_weights=   None,
-                        init_biases=    None)
-
+                .with_layers(Population._create_layers([
+                    randint(*layer_size_range)
                     for _ in range(randint(*layer_nr_range))
                 ], input_size))
                 .compile()

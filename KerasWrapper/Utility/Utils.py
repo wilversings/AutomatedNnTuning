@@ -2,6 +2,7 @@ from random import choice, sample, random
 from typing import List
 import numpy as np
 
+
 class Utils(object):
 
     @staticmethod

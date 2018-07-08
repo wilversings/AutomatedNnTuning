@@ -3,6 +3,7 @@ from KerasWrapper.Utility.Utils import Utils
 from random import choice, random
 from typing import List
 import numpy as np
+from functools import reduce
 
 class LayerWrapper(Individual):
 
@@ -18,10 +19,13 @@ class LayerWrapper(Individual):
 
     
     def crossover(self, others: List['LayerWrapper']) -> 'LayerWrapper':
-        return LayerWrapper(size=           np.mean([self._size] + [x._size for x in others], dtype=int),
+        ans_size = np.mean([self._size] + [x._size for x in others], dtype=int)
+        others_weights_mean = reduce(np.matmul, (x._init_weights for x in others))
+
+        return LayerWrapper(size=           ans_size,
                             activation=     choice([self._activation] + [x._activation for x in others]),
-                            init_weights=   self._init_biases,
-                            init_biases=    self._init_weights)
+                            init_weights=   self._init_weights,
+                            init_biases=    self._init_biases)
 
     def mutate(self) -> 'LayerWrapper':
         if random() < self.MUTATION_CHANCE:
@@ -29,7 +33,7 @@ class LayerWrapper(Individual):
         return self
 
     def measure_fitness(self):
-        raise NotImplementedError("Operation not supported. Cannot measure fitness of an layer")
+        raise NotImplementedError("Operation not supported. Cannot measure fitness of a layer")
         
     @property
     def size(self) -> int:
@@ -46,3 +50,6 @@ class LayerWrapper(Individual):
     @property
     def init_biases(self):
         return self._init_biases
+
+    def __repr__(self):
+        return str(self._size)

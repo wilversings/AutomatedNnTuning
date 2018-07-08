@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABCMeta
 import uuid
 
+
 class Individual(metaclass=ABCMeta):
     
     def __init__(self):
