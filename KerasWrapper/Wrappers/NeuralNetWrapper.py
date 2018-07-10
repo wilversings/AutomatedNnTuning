@@ -30,7 +30,6 @@ class NeuralNetWrapper(ABC):
         return self
 
     def with_layers(self, layers: List[LayerWrapper]) -> 'NeuralNetWrapper':
-        print(layers)
         if __debug__:
             assert(len(layers) >= 1)
 

@@ -1,3 +1,5 @@
+from multiprocessing.pool import Pool
+
 from KerasWrapper.Evolutionary.Individual import Individual
 from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
@@ -25,9 +27,14 @@ class Population:
         self._population = None
         self._population_raw = initial_populaiton
 
-
         self._graveyard = []
         self._logger = logging.getLogger("population")
+
+        self.pool = Pool(processes=6)
+
+    @staticmethod
+    def evaluate_individual(individual_and_data):
+        return EvaluatedIndividual(individual_and_data[0], individual_and_data[1])
 
     def reproduce(self, eval_data: EvaluationData):
         pop_list = list(reversed(self._population))
@@ -43,18 +50,13 @@ class Population:
        
         sel_len = len(selected_ind)
 
-        new_generation = [
-            EvaluatedIndividual(
-                selected_ind[i].individual
+        new_generation = list(self.pool.map(self.evaluate_individual, ((selected_ind[i].individual
                 .crossover(selected_ind[j].individual)
-                .mutate()
-                .compile(), 
-                eval_data
-            )
-            for i in range(sel_len - 1)
-            for j in range(i + 1, sel_len)
-        ]
+                .mutate(), eval_data) for i in range(sel_len - 1)
+            for j in range(i + 1, sel_len))))
 
+        for ind in new_generation:
+            logging.getLogger("fitness").info("{} was born! fitness: {}".format("Name: someone", ind.fitness))
         self._population = SortedList(new_generation + list(selected_ind))
 
         self._logger.info("Reproduction: new individuals: %d, total individuals: %d", len(new_generation), len(self._population))
@@ -75,7 +77,17 @@ class Population:
     def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         
         self._logger.info("Started growing generation 0...");
-        self._population = SortedList(list(map(lambda x: EvaluatedIndividual(x, eval_data), self._population_raw))*3)
+
+        self._population = SortedList(
+            list(
+                self.pool.map(
+                    self.evaluate_individual,
+                    ((x, eval_data) for x in self._population_raw)
+                )
+            ) * 3
+        )
+        for ind in self._population:
+            logging.getLogger("fitness").info("{} was born! fitness: {}".format("Name: someone", ind.fitness))
 
         self.generation_report(0)
 
@@ -114,19 +126,17 @@ class Population:
         pop_size:           int, 
         input_size:         int, 
         output_size:        int, 
-        clasf_prob:         bool, 
-        layer_nr_range:     (int, int), 
+        layer_nr_range:     (int, int),
         layer_size_range:   (int, int), 
         batch_size:         int, 
         epochs:             int) -> 'Population':
         return Population([
-            copy(ArtificialNn(input_size, output_size, clasf_prob))
+            copy(ArtificialNn(input_size, output_size))
                 .with_batch_size(batch_size)
                 .with_epochs(epochs)
                 .with_layers(Population._create_layers([
                     randint(*layer_size_range)
                     for _ in range(randint(*layer_nr_range))
                 ], input_size))
-                .compile()
             for _ in range(pop_size)
         ])

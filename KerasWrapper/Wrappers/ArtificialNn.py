@@ -18,9 +18,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         NeuralNetWrapper.__init__(self, input_size, output_size)
         Individual.__init__(self)
 
-        self.__k_model = None
-
-    def compile(self) -> 'ArtificialNn':
+    def compile(self):
         """
         Compiles the ArtificialNn decorator into a real Keras object,
         with regard about the input, hidden & output layers
@@ -54,9 +52,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
               optimizer='adam',
               metrics=['accuracy'])
 
-        self.__k_model = model
-
-        return self
+        return model
 
     def crossover(self, other: 'ArtificialNn') -> 'ArtificialNn':
         """
@@ -69,7 +65,6 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         if __debug__:
             assert(self._input_size == other._input_size)
             assert(self._output_size == other._output_size)
-            assert(self.__clasf_prob == other.__clasf_prob)
 
         self_layers = self._layers
         other_layers = other._layers
@@ -110,11 +105,10 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         return self
 
     def measure_fitness(self, data: EvaluationData) -> float:
-        if __debug__:
-            assert(self.__k_model is not None)
 
-        self.__k_model.fit(data.train_in, data.train_out,
-                           epochs=self._epochs, batch_size=self._batch_size, verbose=2)
+        model = self.compile()
+        model.fit(data.train_in, data.train_out,
+                           epochs=self._epochs, batch_size=self._batch_size, verbose=0)
 
-        loss_and_metrics = self.__k_model.evaluate(data.test_in, data.test_out, verbose=2)
+        loss_and_metrics = model.evaluate(data.test_in, data.test_out, verbose=2)
         return loss_and_metrics[1]
