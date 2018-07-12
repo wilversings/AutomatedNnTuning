@@ -29,11 +29,11 @@ if __name__ == '__main__':
     problem = HeartDesease('heartdesease.data')
     test_in, test_out, train_in, train_out = problem.perform_k_fold(50)
 
-    pop = Population.generate_rand_population(pop_size=         20,
+    pop = Population.generate_rand_population(pop_size=         50,
                                               input_size=       13,
                                               output_size=      5,
-                                              layer_nr_range=   (3,6),
-                                              layer_size_range= (14, 45),
+                                              layer_nr_range=   (2,8),
+                                              layer_size_range= (10, 50),
                                               batch_size=       20,
                                               epochs=           10)
     eval_data = EvaluationData(test_in, test_out, train_in, train_out)

@@ -61,7 +61,7 @@ class Population:
 
         self._logger.info("Reproduction: new individuals: %d, total individuals: %d", len(new_generation), len(self._population))
 
-    def generation_report(self, i) -> bool:
+    def generation_report(self, i, nr_of_generations) -> bool:
 
         pop_size = len(self._population)
 
@@ -69,6 +69,7 @@ class Population:
             self._logger.info("Your species didn't survive !")
             return False
 
+        print("Growing generation {}/{} done!".format(i, nr_of_generations))
         self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %f, avg fitness: %f", 
                             i, pop_size, self._population[-1].fitness, sum(x.fitness for x in self._population) / pop_size)
 
@@ -76,7 +77,7 @@ class Population:
 
     def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         
-        self._logger.info("Started growing generation 0...");
+        self._logger.info("Started growing generation 0...")
 
         self._population = SortedList(
             list(
@@ -84,19 +85,19 @@ class Population:
                     self.evaluate_individual,
                     ((x, eval_data) for x in self._population_raw)
                 )
-            ) * 3
+            )
         )
         for ind in self._population:
             logging.getLogger("fitness").info("{} was born! fitness: {}".format("Name: someone", ind.fitness))
 
-        self.generation_report(0)
+        self.generation_report(0, nr_of_generaitons)
 
         for i in range(nr_of_generaitons):
 
             self._logger.info("Started growing generation %d...", i + 1)
             self.reproduce(eval_data)
 
-            if not self.generation_report(i + 1):
+            if not self.generation_report(i + 1, nr_of_generaitons):
                 break
 
     @property
@@ -123,12 +124,12 @@ class Population:
 
     @staticmethod
     def generate_rand_population(
-        pop_size:           int, 
-        input_size:         int, 
-        output_size:        int, 
+        pop_size:           int,
+        input_size:         int,
+        output_size:        int,
         layer_nr_range:     (int, int),
-        layer_size_range:   (int, int), 
-        batch_size:         int, 
+        layer_size_range:   (int, int),
+        batch_size:         int,
         epochs:             int) -> 'Population':
         return Population([
             copy(ArtificialNn(input_size, output_size))

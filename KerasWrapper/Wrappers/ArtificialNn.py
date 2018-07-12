@@ -77,14 +77,19 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         # other_layers = Utils.ordered_sample(other_layers, len(self_layers))
         ans_layer_nr = (len(other_layers) + len(self_layers)) // 2
 
-        linsamples = Utils.linspace(len(other_layers), ans_layer_nr)
+        linsamples = Utils.linspace(len(other_layers), ans_layer_nr + 1)
         rev_linsamples = Utils.linspace(len(self_layers) - 1, ans_layer_nr)
 
-        new_layers = []
-        trail = linsamples[0]
-        for sample, rev_sample in list(zip(linsamples, rev_linsamples))[1:]:
-            new_layers.append(self_layers[rev_sample].crossover(other_layers[trail:sample]).mutate())
-            trail = sample
+        new_layers = \
+            [self_layers[rev_linsamples[ind - 1]]
+                .crossover(other_layers[linsamples[ind - 1]: linsamples[ind]])
+                .mutate()
+            for ind in range(1, len(rev_linsamples))]
+
+        # trail = linsamples[0]
+        # for sample, rev_sample in list(zip(linsamples, rev_linsamples))[1:]:
+        #     new_layers.append(self_layers[rev_sample].crossover(other_layers[trail:sample]).mutate())
+        #     trail = sample
 
         return ArtificialNn(self._input_size, self._output_size)\
             .with_layers(
@@ -110,5 +115,5 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         model.fit(data.train_in, data.train_out,
                            epochs=self._epochs, batch_size=self._batch_size, verbose=0)
 
-        loss_and_metrics = model.evaluate(data.test_in, data.test_out, verbose=2)
+        loss_and_metrics = model.evaluate(data.test_in, data.test_out, verbose=0)
         return loss_and_metrics[1]
