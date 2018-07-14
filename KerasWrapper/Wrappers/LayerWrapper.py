@@ -25,8 +25,8 @@ class LayerWrapper(Individual):
         self_rows, self_cols = self._init_weights.shape
         other_rows, other_cols = others_weights_mean.shape
 
-        weights = (np.matmul(self._init_weights, np.ones((self_cols, other_cols))) +\
-        np.matmul(np.ones((self_rows, other_rows)), others_weights_mean)) / 2
+        weights = (np.matmul(self._init_weights, np.eye(self_cols, other_cols)) +\
+        np.matmul(np.eye(self_rows, other_rows), others_weights_mean)) / 2
 
         biases = sum([Utils.rebin_array(self._init_biases, ans_size)] + [Utils.rebin_array(x.init_biases, ans_size) for x in others])[0]
 
