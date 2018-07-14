@@ -1,3 +1,6 @@
+from typing import List
+
+from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from KerasWrapper.Wrappers.NeuralNetWrapper import NeuralNetWrapper
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from KerasWrapper.Utility.Utils import Utils
@@ -29,11 +32,11 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             Dense(
                 units=      self._layers[0].size, 
                 input_dim=  self._input_size,
-                #weights=    [self.layers[0].init_weights, self.layers[0].init_biases]
+                weights=    [self.layers[0].init_weights, self.layers[0].init_biases]
         )] + [Dense(
                 units=      x.size, 
                 activation= x.activation,
-                #weights=    [x.init_weights, x.init_biases]
+                weights=    [x.init_weights, x.init_biases]
              )  for x in self._layers[1:]
         ] + [Dense(
                 units=      self._output_size
@@ -53,6 +56,9 @@ class ArtificialNn(NeuralNetWrapper, Individual):
               metrics=['accuracy'])
 
         return model
+
+    def refine_layers(self, layers: List['LayerWrapper']) -> List['LayerWrapper']:
+        pass
 
     def crossover(self, other: 'ArtificialNn') -> 'ArtificialNn':
         """
@@ -81,10 +87,10 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         rev_linsamples = Utils.linspace(len(self_layers) - 1, ans_layer_nr)
 
         new_layers = \
-            [self_layers[rev_linsamples[ind - 1]]
+            self.refine_layers([self_layers[rev_linsamples[ind - 1]]
                 .crossover(other_layers[linsamples[ind - 1]: linsamples[ind]])
                 .mutate()
-            for ind in range(1, len(rev_linsamples))]
+            for ind in range(1, len(rev_linsamples))])
 
         # trail = linsamples[0]
         # for sample, rev_sample in list(zip(linsamples, rev_linsamples))[1:]:
