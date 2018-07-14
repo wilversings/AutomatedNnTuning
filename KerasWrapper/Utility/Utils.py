@@ -1,3 +1,4 @@
+from collections import defaultdict
 from random import choice, sample, random
 from typing import List
 import numpy as np
@@ -27,27 +28,32 @@ class Utils(object):
         srows, scols = mat.shape
         trows, tcols = target_shape
 
+        a = [-1, 1]
+
         r_compress = srows > trows
-        r_ls = Utils.linspace(srows + 1, trows + 1)
+        r_ls = Utils.linspace(srows + a[r_compress], trows + r_compress)
 
         c_compress = scols > tcols
-        c_ls = Utils.linspace(scols + 1, tcols + 1)
+        c_ls = Utils.linspace(scols + a[c_compress], tcols + c_compress)
+
+        r_ls_rev = defaultdict(lambda: 0)
+        c_ls_rev = defaultdict(lambda: 0)
+        for el in r_ls: r_ls_rev[el] += 1
+        for el in c_ls: c_ls_rev[el] += 1
 
         ans = [[None] * tcols for _ in range(trows)]
-        if r_compress and c_compress:
-            for rind in range(1, trows + 1):
-                for cind in range(1, tcols + 1):
-                    ans[rind - 1][cind - 1] = np.mean(mat[r_ls[rind - 1]: r_ls[rind], c_ls[cind - 1]: c_ls[cind]])
+        for rind in range(r_compress, trows + r_compress):
+            for cind in range(c_compress, tcols + c_compress):
 
+                if r_compress and c_compress:
+                    cell = np.mean(mat[r_ls[rind - 1]: r_ls[rind], c_ls[cind - 1]: c_ls[cind]])
+                elif not r_compress and c_compress:
+                    cell = np.mean(mat[r_ls[rind], c_ls[cind - 1]: c_ls[cind]]) / r_ls_rev[r_ls[rind]]
+                elif r_compress and not c_compress:
+                    cell = np.mean(mat[r_ls[rind - 1]: r_ls[rind], c_ls[cind]]) / c_ls_rev[c_ls[cind]]
+                else:
+                    cell = mat[r_ls[rind], c_ls[cind]] / (r_ls_rev[r_ls[rind]] * c_ls_rev[c_ls[cind]])
 
-        return ans
+                ans[rind - r_compress][cind - c_compress] = cell
 
-
-mat = [
-    [1, 5, 3, 2],
-    [6, 23, 1, 43],
-    [45, 7, 34, 53],
-    [45, 1, 5, 7],
-    [7, 5, 1, 2]
-]
-print(Utils.rebin(np.array(mat), (3, 3)))
+        return np.array(ans)

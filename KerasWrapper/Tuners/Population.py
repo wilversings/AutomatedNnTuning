@@ -30,7 +30,7 @@ class Population:
         self._graveyard = []
         self._logger = logging.getLogger("population")
 
-        self.pool = Pool(processes=6)
+        self.pool = Pool(processes=7)
 
     @staticmethod
     def evaluate_individual(individual_and_data):

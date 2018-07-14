@@ -58,7 +58,17 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         return model
 
     def refine_layers(self, layers: List['LayerWrapper']) -> List['LayerWrapper']:
-        pass
+        ans = []
+        trail = self._input_size
+        for layer in layers:
+            ans.append(
+                LayerWrapper(size=           layer.size,
+                             activation=     layer.activation,
+                             init_weights=   Utils.rebin(layer.init_weights, (trail, layer.size)),
+                             init_biases=    layer.init_biases))
+            trail = layer.size
+
+        return ans
 
     def crossover(self, other: 'ArtificialNn') -> 'ArtificialNn':
         """
