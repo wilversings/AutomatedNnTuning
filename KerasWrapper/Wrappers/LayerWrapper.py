@@ -28,16 +28,16 @@ class LayerWrapper(Individual):
         weights = (np.matmul(self._init_weights, np.ones((self_cols, other_cols))) +\
         np.matmul(np.ones((self_rows, other_rows)), others_weights_mean)) / 2
 
-        assert(weights.shape[0] == self_rows and weights.shape[1] == other_cols)
+        biases = sum([Utils.rebin_array(self._init_biases, ans_size)] + [Utils.rebin_array(x.init_biases, ans_size) for x in others])[0]
 
         return LayerWrapper(size=           ans_size,
                             activation=     choice([self._activation] + [x._activation for x in others]),
                             init_weights=   weights,
-                            init_biases=    np.ones(ans_size))
+                            init_biases=    biases)
 
     def mutate(self) -> 'LayerWrapper':
-        # if random() < self.MUTATION_CHANCE:
-        #     self._size = self._size + choice([-1, 1])
+        if random() < self.MUTATION_CHANCE:
+            self._size = self._size + choice([-1, 1])
         return self
 
     def measure_fitness(self):

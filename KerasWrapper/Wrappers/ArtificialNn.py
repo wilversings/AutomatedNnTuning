@@ -65,7 +65,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
                 LayerWrapper(size=           layer.size,
                              activation=     layer.activation,
                              init_weights=   Utils.rebin(layer.init_weights, (trail, layer.size)),
-                             init_biases=    layer.init_biases))
+                             init_biases=    layer.init_biases if layer.size == len(layer.init_biases) else Utils.rebin_array(layer.init_biases, layer.size)[0]))
             trail = layer.size
 
         return ans

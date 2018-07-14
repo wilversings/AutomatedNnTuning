@@ -24,6 +24,10 @@ class Utils(object):
         return [list[i] for i in sorted(indices)]
 
     @staticmethod
+    def rebin_array(arr, target_size):
+        return Utils.rebin(np.array([arr]), (1, target_size))
+
+    @staticmethod
     def rebin(mat, target_shape) -> List:
         srows, scols = mat.shape
         trows, tcols = target_shape
