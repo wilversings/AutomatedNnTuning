@@ -132,4 +132,6 @@ class ArtificialNn(NeuralNetWrapper, Individual):
                            epochs=self._epochs, batch_size=self._batch_size, verbose=0)
 
         loss_and_metrics = model.evaluate(data.test_in, data.test_out, verbose=0)
-        return loss_and_metrics[1]
+
+        arch_size = sum(self.layers[i].size * self.layers[i - 1].size for i in range(1, len(self.layers)))
+        return loss_and_metrics[1], 1 / arch_size

@@ -26,11 +26,11 @@ if __name__ == '__main__':
                         filename='general.log',
                         filemode='w')
 
-    # problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels')
+    # problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels') # input = 729, output = 10
     # test_in, test_out, train_in, train_out = problem.perform_k_fold(10000)
-    problem = SportArticleObjectivity('features.csv')
+    problem = SportArticleObjectivity('features.csv') # input = 57, output = 2
     test_in, test_out, train_in, train_out = problem.perform_k_fold(150)
-    # problem = HeartDesease('heartdesease.data')
+    # problem = HeartDesease('heartdesease.data') # input = 13, output = 5
     # test_in, test_out, train_in, train_out = problem.perform_k_fold(50)
 
     pop = Population.generate_rand_population(pop_size=         50,
@@ -42,4 +42,4 @@ if __name__ == '__main__':
                                               epochs=           10)
     eval_data = EvaluationData(test_in, test_out, train_in, train_out)
 
-    pop.grow_by_nr_of_generations(25, eval_data)
+    pop.grow_by_nr_of_generations(100, eval_data)

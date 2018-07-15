@@ -30,7 +30,7 @@ class Population:
         self._graveyard = []
         self._logger = logging.getLogger("population")
 
-        self.pool = Pool(processes=7)
+        self.pool = Pool(processes=6)
 
     @staticmethod
     def evaluate_individual(individual_and_data):
@@ -70,8 +70,8 @@ class Population:
             return False
 
         print("Growing generation {}/{} done!".format(i, nr_of_generations))
-        self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: %f, avg fitness: %f", 
-                            i, pop_size, self._population[-1].fitness, sum(x.fitness for x in self._population) / pop_size)
+        self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: (%f, %f), avg fitness: (%f, %f)",
+                            i, pop_size, self._population[-1].fitness[0], self._population[-1].fitness[1], sum(x.fitness[0] for x in self._population) / pop_size, sum(x.fitness[1] for x in self._population) / pop_size)
 
         return True
 
