@@ -1,6 +1,8 @@
 from keras.models import Sequential
 import logging
 import json
+
+from KerasWrapper.Problems.SportArticleObjectivity import SportArticleObjectivity
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
@@ -24,16 +26,18 @@ if __name__ == '__main__':
                         filename='general.log',
                         filemode='w')
 
-    #problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels')
-    #test_in, test_out, train_in, train_out = problem.perform_k_fold(10000)
-    problem = HeartDesease('heartdesease.data')
-    test_in, test_out, train_in, train_out = problem.perform_k_fold(50)
+    # problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels')
+    # test_in, test_out, train_in, train_out = problem.perform_k_fold(10000)
+    problem = SportArticleObjectivity('features.csv')
+    test_in, test_out, train_in, train_out = problem.perform_k_fold(150)
+    # problem = HeartDesease('heartdesease.data')
+    # test_in, test_out, train_in, train_out = problem.perform_k_fold(50)
 
     pop = Population.generate_rand_population(pop_size=         50,
-                                              input_size=       13,
-                                              output_size=      5,
+                                              input_size=       57,
+                                              output_size=      2,
                                               layer_nr_range=   (2,8),
-                                              layer_size_range= (10, 50),
+                                              layer_size_range= (10, 40),
                                               batch_size=       20,
                                               epochs=           10)
     eval_data = EvaluationData(test_in, test_out, train_in, train_out)

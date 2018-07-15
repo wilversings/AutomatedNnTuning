@@ -94,7 +94,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         ans_layer_nr = (len(other_layers) + len(self_layers)) // 2
 
         linsamples = Utils.linspace(len(other_layers), ans_layer_nr + 1)
-        rev_linsamples = Utils.linspace(len(self_layers) - 1, ans_layer_nr)
+        rev_linsamples = Utils.linspace(len(self_layers) - 1, ans_layer_nr + 1)
 
         new_layers = \
             self.refine_layers([self_layers[rev_linsamples[ind - 1]]
