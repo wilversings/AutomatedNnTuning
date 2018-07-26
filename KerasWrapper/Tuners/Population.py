@@ -23,6 +23,8 @@ class Population:
     ELITISM_RATE = 0.1
     TOURNAMENT_SIZE = 9
 
+    DEGREE_OF_PARALLELIZAITON = 6
+
     def __init__(self, initial_populaiton: list):
         self._population = None
         self._population_raw = initial_populaiton
@@ -30,7 +32,7 @@ class Population:
         self._graveyard = []
         self._logger = logging.getLogger("population")
 
-        self.pool = Pool(processes=6)
+        self.pool = Pool(processes=Population.DEGREE_OF_PARALLELIZAITON)
 
     @staticmethod
     def evaluate_individual(individual_and_data):
@@ -99,6 +101,10 @@ class Population:
 
             if not self.generation_report(i + 1, nr_of_generaitons):
                 break
+
+            if (i + 1) % 20 == 0:
+                self.pool.close()
+                self.pool = Pool(processes=Population.DEGREE_OF_PARALLELIZAITON)
 
     @property
     def population(self) -> SortedList:

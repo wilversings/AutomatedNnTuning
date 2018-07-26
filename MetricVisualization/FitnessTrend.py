@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import re
+import os
+
+print("You are here: " + os.getcwd())
 
 individuals = [
-        float(re.search("fitness: (.*)", log).group(1)) 
+        float(re.search("fitness: \((.*),.*\)", log).group(1))
         for log in open(input("Filename: "), "r") 
         if "was born!" in log]
 

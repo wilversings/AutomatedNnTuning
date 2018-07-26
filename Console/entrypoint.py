@@ -11,31 +11,36 @@ import numpy as np
 from KerasWrapper.Tuners.Population import Population
 from KerasWrapper.Problems.CharRecognition import CharRecognition
 from KerasWrapper.Problems.HeartDesease import HeartDesease
+import sys
+import os
 
 from tensorflow.python.client import device_lib
 
 if __name__ == '__main__':
-
-    print("-- Devices list ---------------------\n")
-    device_lib.list_local_devices()
+    print ("You are here: " + os.getcwd())
     print('\n')
 
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                         datefmt='%m-%d %H:%M:%S',
-                        filename='general.log',
+                        filename="general3.log",
                         filemode='w')
 
-    # problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels') # input = 729, output = 10
-    # test_in, test_out, train_in, train_out = problem.perform_k_fold(10000)
-    problem = SportArticleObjectivity('features.csv') # input = 57, output = 2
+    problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels') # input = 784, output = 10
     test_in, test_out, train_in, train_out = problem.perform_k_fold(150)
+    train_in = train_in[:850]
+    train_out = train_out[:850]
+
+    # problem = SportArticleObjectivity('features.csv') # input = 57, output = 2
+    # test_in, test_out, train_in, train_out = problem.perform_k_fold(150)
+
     # problem = HeartDesease('heartdesease.data') # input = 13, output = 5
     # test_in, test_out, train_in, train_out = problem.perform_k_fold(50)
 
+    print("Training entries: " + str(len(train_in)) + " Testing entries: " + str(len(test_in)))
     pop = Population.generate_rand_population(pop_size=         50,
-                                              input_size=       57,
-                                              output_size=      2,
+                                              input_size=       784,
+                                              output_size=      10,
                                               layer_nr_range=   (2,8),
                                               layer_size_range= (10, 40),
                                               batch_size=       20,
