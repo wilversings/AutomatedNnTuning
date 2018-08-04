@@ -1,7 +1,14 @@
 from KerasWrapper.Problems.ProblemBase import ProblemBase
 from typing import List
 
+"""
+P.2
+"""
 class HeartDesease(ProblemBase):
+
+    def __init__(self, uri):
+        super().__init__(uri)
+        self._logger.info("Starting new population to test: P.2")
 
     def _load_data(self, uri):
         with open(uri) as inp:

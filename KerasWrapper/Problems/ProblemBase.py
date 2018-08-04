@@ -2,6 +2,7 @@ from random import shuffle
 from abc import abstractmethod
 from abc import ABC
 import numpy as np
+import logging
 
 class ProblemBase(ABC):
     
@@ -10,6 +11,7 @@ class ProblemBase(ABC):
 
     def __init__(self, uri):
         self._database = self._load_data(uri);
+        self._logger = logging.getLogger("problem")
 
     def perform_k_fold(self, k):
 

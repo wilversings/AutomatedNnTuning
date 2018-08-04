@@ -2,7 +2,14 @@ from KerasWrapper.Problems.ProblemBase import ProblemBase
 from typing import List
 import csv
 
+"""
+P.3
+"""
 class SportArticleObjectivity(ProblemBase):
+
+    def __init__(self, uri):
+        super().__init__(uri)
+        self._logger.info("Starting new population to test: P.3")
 
     def _load_data(self, uri):
         with open(uri) as inp:

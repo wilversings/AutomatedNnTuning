@@ -1,20 +1,12 @@
-from keras.models import Sequential
 import logging
-import json
 
 from KerasWrapper.Problems.SportArticleObjectivity import SportArticleObjectivity
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
-from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
-from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
-from keras.layers.core import Dense
-import numpy as np
 from KerasWrapper.Tuners.Population import Population
 from KerasWrapper.Problems.CharRecognition import CharRecognition
 from KerasWrapper.Problems.HeartDesease import HeartDesease
-import sys
 import os
-
-from tensorflow.python.client import device_lib
+import time
 
 if __name__ == '__main__':
     print ("You are here: " + os.getcwd())
@@ -23,7 +15,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                         datefmt='%m-%d %H:%M:%S',
-                        filename="general3.log",
+                        filename= str(time.time()) + ".log",
                         filemode='w')
 
     problem = CharRecognition('train/mnist', 'train/mnist_labels', 'test/mnist_test', 'test/mnist_test_labels') # input = 784, output = 10
