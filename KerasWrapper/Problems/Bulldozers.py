@@ -31,7 +31,7 @@ class Bulldozers(ProblemBase):
 
         self.Integers = cols_idx[:self.UsageBand]
         self.DateTimes = [cols_idx[self.Saledate]]
-        self.Strings = [cols_idx[self.MachineHoursCurrentMeter]] + cols_idx[self.FiModelDesc:]\
+        self.Strings = [cols_idx[self.MachineHoursCurrentMeter]] + cols_idx[self.FiModelDesc:]
 
         super().__init__(uri)
 

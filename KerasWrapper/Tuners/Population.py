@@ -1,3 +1,4 @@
+import time
 from multiprocessing.pool import Pool
 
 from KerasWrapper.Evolutionary.Individual import Individual
@@ -16,7 +17,7 @@ import json
 from math import ceil
 from typing import List
 import numpy as np
-
+from keras.utils.vis_utils import plot_model
 
 class Population:
     
@@ -25,6 +26,8 @@ class Population:
     TOURNAMENT_SIZE = 9
 
     DEGREE_OF_PARALLELIZAITON = 6
+
+    NAME = time.time()
 
     def __init__(self, initial_populaiton: list):
         self._population = None
@@ -76,7 +79,19 @@ class Population:
         self._logger.info("Growing done for generation %d! individuals: %d, best's fitness: (%f, %f), avg fitness: (%f, %f)",
                             i, pop_size, self._population[-1].fitness[0], self._population[-1].fitness[1], sum(x.fitness[0] for x in self._population) / pop_size, sum(x.fitness[1] for x in self._population) / pop_size)
 
+        self.dump_best(i)
+
         return True
+
+    def dump_best(self, i):
+
+        model = self._population[-1].individual.compile()
+        with open("{}/model_gen{}.json".format(Population.NAME, i), "w") as json_file:
+            json_file.write(model.to_json())
+        model.save_weights("{}/model_gen{}.h5".format(Population.NAME, i))
+
+        plot_model(model, to_file='{}/model_gen{}.png'.format(Population.NAME, i), show_shapes=True)
+
 
     def grow_by_nr_of_generations(self, nr_of_generaitons: int, eval_data: EvaluationData):
         

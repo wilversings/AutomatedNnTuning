@@ -52,7 +52,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
             model.add(layer)
 
         if self._problem_type == ProblemType.Classification:
-            loss = 'categorial_crossentropy'
+            loss = 'categorical_crossentropy'
             model.add(Activation("softmax"))
             metrics = ['accuracy']
         elif self._problem_type == ProblemType.BinaryClassification:
