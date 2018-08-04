@@ -1,10 +1,14 @@
-from KerasWrapper.Problems.ProblemBase import ProblemBase
+from KerasWrapper.Problems.ProblemBase import ProblemBase, ProblemType
 from typing import List
 
 """
 P.2
 """
 class HeartDesease(ProblemBase):
+
+    INPUT_SIZE = 13
+    OUTPUT_SIZE = 5
+    PROB_TYPE = ProblemType.Classification
 
     def __init__(self, uri):
         super().__init__(uri)

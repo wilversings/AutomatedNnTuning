@@ -1,4 +1,4 @@
-from KerasWrapper.Problems.ProblemBase import ProblemBase
+from KerasWrapper.Problems.ProblemBase import ProblemBase, ProblemType
 import numpy as np
 from typing import List
 
@@ -6,7 +6,11 @@ from typing import List
 P.1
 """
 class CharRecognition(ProblemBase):
-    
+
+    INPUT_SIZE = 784
+    OUTPUT_SIZE = 10
+    PROB_TYPE = ProblemType.Classification
+
     def __init__(self, uri_train, uri_train_labels, uri_test, uri_test_labels):
         super(CharRecognition, self).__init__((uri_train, uri_train_labels, uri_test, uri_test_labels))
         self._logger.info("Starting new population to test: P.1")

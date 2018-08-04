@@ -1,5 +1,6 @@
 from typing import List
 
+from KerasWrapper.Problems.ProblemBase import ProblemType
 from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from KerasWrapper.Wrappers.NeuralNetWrapper import NeuralNetWrapper
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
@@ -9,16 +10,19 @@ from KerasWrapper.Evolutionary.Individual import Individual
 from keras.layers.core import Activation
 from keras.models import Sequential
 from keras.layers.core import Dense
+import keras.backend as K
 import logging
+from enum import Enum
+
 
 
 class ArtificialNn(NeuralNetWrapper, Individual):
 
     MUTATION_CHANCE = 0.2
     
-    def __init__(self, input_size: int, output_size: int):
+    def __init__(self, input_size: int, output_size: int, problem_type: ProblemType):
         
-        NeuralNetWrapper.__init__(self, input_size, output_size)
+        NeuralNetWrapper.__init__(self, input_size, output_size, problem_type)
         Individual.__init__(self)
 
     def compile(self):
@@ -47,13 +51,22 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         for layer in k_layers:
             model.add(layer)
 
-        # Use softmax only for classification problems
-        model.add(Activation("softmax"))
+        if self._problem_type == ProblemType.Classification:
+            loss = 'categorial_crossentropy'
+            model.add(Activation("softmax"))
+            metrics = ['accuracy']
+        elif self._problem_type == ProblemType.BinaryClassification:
+            loss = 'binary_crossentropy'
+            model.add(Activation("softmax"))
+            metrics = ['accuracy']
+        elif self._problem_type == ProblemType.Regression:
+            loss = 'mse'
+            metrics = []
 
-        model.compile(loss='categorical_crossentropy',
+        model.compile(loss=loss,
                 #TODO: make optimizer a gene
               optimizer='adam',
-              metrics=['accuracy'])
+              metrics=metrics)
 
         return model
 
@@ -107,7 +120,7 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         #     new_layers.append(self_layers[rev_sample].crossover(other_layers[trail:sample]).mutate())
         #     trail = sample
 
-        return ArtificialNn(self._input_size, self._output_size)\
+        return ArtificialNn(self._input_size, self._output_size, self._problem_type)\
             .with_layers(
                 new_layers
             )\
@@ -134,4 +147,8 @@ class ArtificialNn(NeuralNetWrapper, Individual):
         loss_and_metrics = model.evaluate(data.test_in, data.test_out, verbose=0)
 
         arch_size = sum(self.layers[i].size * self.layers[i - 1].size for i in range(1, len(self.layers)))
-        return loss_and_metrics[1], 1 / arch_size
+
+        if self._problem_type == ProblemType.Classification or self._problem_type == ProblemType.BinaryClassification:
+            return loss_and_metrics[1], 1 / arch_size
+        elif self._problem_type == ProblemType.Regression:
+            return 1 / loss_and_metrics[0], 1 / arch_size

@@ -6,7 +6,7 @@ from keras.models import Sequential
 
 class NeuralNetWrapper(ABC):
 
-    def __init__(self, input_size, output_size):
+    def __init__(self, input_size, output_size, problem_type):
         
         # Hyperparameters that are configured by the Evolutive algorithm (genes)
         self._epochs = None
@@ -16,6 +16,7 @@ class NeuralNetWrapper(ABC):
         # Hyperparameters that are configured by the Evolutive algorithm's user
         self._input_size = input_size
         self._output_size = output_size
+        self._problem_type = problem_type
 
     @abstractmethod
     def compile(self):

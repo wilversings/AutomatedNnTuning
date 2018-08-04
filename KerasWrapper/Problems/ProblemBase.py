@@ -3,6 +3,12 @@ from abc import abstractmethod
 from abc import ABC
 import numpy as np
 import logging
+from enum import Enum
+
+class ProblemType(Enum):
+    Classification = 1
+    BinaryClassification = 2
+    Regression = 3
 
 class ProblemBase(ABC):
     

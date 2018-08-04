@@ -1,6 +1,7 @@
 from multiprocessing.pool import Pool
 
 from KerasWrapper.Evolutionary.Individual import Individual
+from KerasWrapper.Problems.ProblemBase import ProblemType
 from KerasWrapper.Wrappers.LayerWrapper import LayerWrapper
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
 from KerasWrapper.Wrappers.ArtificialNn import ArtificialNn
@@ -136,9 +137,10 @@ class Population:
         layer_nr_range:     (int, int),
         layer_size_range:   (int, int),
         batch_size:         int,
-        epochs:             int) -> 'Population':
+        epochs:             int,
+        prob_type:          ProblemType) -> 'Population':
         return Population([
-            copy(ArtificialNn(input_size, output_size))
+            copy(ArtificialNn(input_size, output_size, prob_type))
                 .with_batch_size(batch_size)
                 .with_epochs(epochs)
                 .with_layers(Population._create_layers([

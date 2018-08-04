@@ -1,4 +1,4 @@
-from KerasWrapper.Problems.ProblemBase import ProblemBase
+from KerasWrapper.Problems.ProblemBase import ProblemBase, ProblemType
 from typing import List
 import csv
 
@@ -6,6 +6,10 @@ import csv
 P.3
 """
 class SportArticleObjectivity(ProblemBase):
+
+    INPUT_SIZE = 51
+    OUTPUT_SIZE = 2
+    PROB_TYPE = ProblemType.BinaryClassification
 
     def __init__(self, uri):
         super().__init__(uri)
