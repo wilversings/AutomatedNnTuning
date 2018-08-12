@@ -27,7 +27,7 @@ class Population:
 
     DEGREE_OF_PARALLELIZAITON = 6
 
-    NAME = time.time()
+    NAME = str(time.time())
 
     def __init__(self, initial_populaiton: list):
         self._population = None
@@ -49,21 +49,20 @@ class Population:
         elite = ceil(pop_len * Population.ELITISM_RATE)
 
         mating_pool = \
-            [(1, individual) for individual in pop_list[: elite]] + \
-            [(1 - i * Population.PRESSURE_RATE / pop_len, individual) for i, individual in list(enumerate(pop_list))[elite: ]]
+            [individual for individual in pop_list[: elite]] + \
+            [individual for i, individual in list(enumerate(pop_list))[elite: ] if Utils.uneven(1 - i * Population.PRESSURE_RATE / pop_len)][:Population.TOURNAMENT_SIZE - elite]
 
-        _, selected_ind = list(zip(*sorted(mating_pool, reverse=True)[:Population.TOURNAMENT_SIZE]))
-       
-        sel_len = len(selected_ind)
+        sel_len = len(mating_pool)
 
-        new_generation = list(self.pool.map(self.evaluate_individual, ((selected_ind[i].individual
-                .crossover(selected_ind[j].individual)
-                .mutate(), eval_data) for i in range(sel_len - 1)
+        new_generation = list(self.pool.map(self.evaluate_individual, ((mating_pool[i].individual
+                .crossover(mating_pool[j].individual)
+                .mutate(), eval_data)
+            for i in range(sel_len - 1)
             for j in range(i + 1, sel_len))))
 
         for ind in new_generation:
             logging.getLogger("fitness").info("{} was born! fitness: {}".format("Name: someone", ind.fitness))
-        self._population = SortedList(new_generation + list(selected_ind))
+        self._population = SortedList(new_generation + list(mating_pool))
 
         self._logger.info("Reproduction: new individuals: %d, total individuals: %d", len(new_generation), len(self._population))
 

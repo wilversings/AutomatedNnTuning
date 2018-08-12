@@ -1,19 +1,15 @@
 import logging
 
-from KerasWrapper.Problems.Bulldozers import Bulldozers
-from KerasWrapper.Problems.SportArticleObjectivity import SportArticleObjectivity
 from KerasWrapper.Wrappers.EvaluationData import EvaluationData
-from KerasWrapper.Tuners.Population import Population
-from KerasWrapper.Problems.CharRecognition import CharRecognition
+from KerasWrapper.Evolutionary.Population import Population
 from KerasWrapper.Problems.HeartDesease import HeartDesease
 import os
-import time
 
 if __name__ == '__main__':
     print ("You are here: " + os.getcwd())
     print('\n')
 
-    Population.NAME = input("Name of your population > ")
+    # Population.NAME = input("Name of your population > ")
 
     if not os.path.exists(Population.NAME):
         os.makedirs(Population.NAME)
@@ -45,7 +41,7 @@ if __name__ == '__main__':
 
     Problem = HeartDesease
     problem = HeartDesease('heartdesease.data') # input = 13, output = 5
-    test_in, test_out, train_in, train_out = problem.perform_k_fold(50)
+    test_in, test_out, train_in, train_out = problem.perform_k_fold(35)
 
     print("Training entries: " + str(len(train_in)) + " Testing entries: " + str(len(test_in)))
     pop = Population.generate_rand_population(pop_size=         50,

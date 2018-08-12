@@ -19,7 +19,7 @@ class LayerWrapper(Individual):
 
     def crossover(self, others: List['LayerWrapper']) -> 'LayerWrapper':
         ans_size = np.mean([self._size] + [x._size for x in others], dtype=int)
-        others_weights_mean = reduce(np.matmul, (x._init_weights for x in others)) / len(others)
+        others_weights_mean = reduce(np.matmul, (x._init_weights for x in others)) ** (1 / len(others))
 
         # self._init_weights * other_weights_mean
         self_rows, self_cols = self._init_weights.shape
