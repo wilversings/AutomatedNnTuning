@@ -21,7 +21,7 @@ generations = np.array(generations)
 n = np.arange(gen_nr)
 
 fig, ax1 = plt.subplots()
-plt.title("{} trend over 100 generations for P.1".format(metric_name.capitalize()))
+plt.title("{} trend over 51 generations for P.1".format(metric_name.capitalize()))
 ax1.set_xlabel("Generation")
 ax1.set_ylabel("{} (higher is better)".format(metric_name.capitalize()))
 

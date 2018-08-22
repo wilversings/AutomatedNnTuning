@@ -19,11 +19,12 @@ time_ticks = [(x - t0).total_seconds() for x in time_ticks]
 n = np.arange(len(generations))
 
 fig, ax1 = plt.subplots()
-plt.title("{} over 100 generations for P.1".format(metric_name.capitalize()))
+plt.title("{} over 100 generations for P.2".format(metric_name.capitalize()))
 ax1.set_xlabel("Generation")
-ax1.set_ylabel("{} (higher is better)".format(metric_name.capitalize()))
+ax1.set_ylabel("{} (lower is better)".format(metric_name.capitalize()))
 
 ax1.plot(n, time_ticks, 'b-', label=metric_name.capitalize())
+ax1.plot(n, [time_ticks[0] * (i + 1) for i in n], 'g-', label="Ideal")
 ax1.legend()
 
 plt.xticks(n)
