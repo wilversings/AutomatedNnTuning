@@ -11,7 +11,7 @@ class LayerWrapper(Individual):
 
     def __init__(self, size: int, activation: str, init_weights, init_biases):
         
-        # Hyperparameters that are configured by the Evolutive algorithm
+        # Hyperparameters that are configured by the Evolutionary algorithm
         self._size = size
         self._activation = activation
         self._init_weights = init_weights
