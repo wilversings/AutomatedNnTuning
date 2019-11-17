@@ -48,7 +48,7 @@ six==1.11.0
 sortedcontainers==1.5.9
 tensorflow-gpu==1.5.0
 tensorflow-tensorboard==1.5.1
-urllib3==1.22
+urllib3==1.24.2
 validictory==1.1.1
 Werkzeug==0.15.3
 wheel==0.30.0
